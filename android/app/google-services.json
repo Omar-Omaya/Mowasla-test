@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "470124059707",
+    "project_id": "mowasla-back",
+    "storage_bucket": "mowasla-back.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470124059707:android:5bb02a78f32018e29a101e",
+        "android_client_info": {
+          "package_name": "com.example.mowaslaprototype"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "470124059707-jnmeucg41f6br37as1gps2pb73va7rkk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDj4eD4NQtxhND2mRlINTRunkR1IpEUf1I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "470124059707-jnmeucg41f6br37as1gps2pb73va7rkk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
