@@ -1,13 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mowasla_prototype/Register/signIn.dart';
 import 'package:mowasla_prototype/Register/signUp.dart';
 import 'package:mowasla_prototype/StartupPage.dart';
 import 'package:mowasla_prototype/mainScreen.dart';
+import 'package:mowasla_prototype/main.dart';
 
 class signIn extends StatelessWidget {
-  const signIn({ Key? key }) : super(key: key);
+
 
   static const String idScreen = "login";
+  TextEditingController emailTextEditingController = TextEditingController();
+  TextEditingController passwordTextEditingController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +40,7 @@ class signIn extends StatelessWidget {
             ),
             SizedBox(height: 1.0,),
             TextFormField(
+              controller: emailTextEditingController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 labelText: "Email",
@@ -47,6 +55,7 @@ class signIn extends StatelessWidget {
                         SizedBox(height: 1.0,),
             SizedBox(height: 1.0,),
             TextFormField(
+              controller: passwordTextEditingController,
               obscureText: true,
               obscuringCharacter: "*",
               keyboardType: TextInputType.visiblePassword,
@@ -76,7 +85,20 @@ class signIn extends StatelessWidget {
               ),
               onPressed: ()
               {
-                print("logged in button clicked");
+                if(!emailTextEditingController.text.contains("@"))
+                {
+                  displayToastMessage("Email address is mandatory.", context);
+                }
+                else if(passwordTextEditingController.text.length < 7)
+                {
+                  displayToastMessage("Password must be atleast 6 Characters.", context);
+                }
+                else
+                {
+                  loginAndAuthicateUser(context);
+                }
+                // print("logged in button clicked");
+                
               },
             ),
             FlatButton(onPressed: ()
@@ -94,4 +116,57 @@ class signIn extends StatelessWidget {
        
   );
   }
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  void loginAndAuthicateUser(BuildContext context) async
+  {
+    
+
+  final User firebaseUser = (await _firebaseAuth
+  .signInWithEmailAndPassword(email: emailTextEditingController.text
+  , password: passwordTextEditingController.text).catchError((errMsg)
+  {
+    displayToastMessage("Error : " + errMsg.toString(), context);
+    } )).user!;
+    if(firebaseUser !=null)
+    {
+    
+
+    usersRef.child(firebaseUser.uid).once().then((DataSnapshot snap){
+      if(snap.value != null)
+      {
+        Navigator.pushNamedAndRemoveUntil(context, mainScreen.idScreen, (route) => false);
+        displayToastMessage("You are logged-in now.", context);
+      }
+      else
+      {
+        _firebaseAuth.signOut();
+        displayToastMessage("No record exists for this user. Please create new account.", context);
+        
+      }
+    });
+    
+
+   
+
+
+  }
+  else
+  {
+
+    displayToastMessage("User has not been created", context);
+
+  }
+
+
+  
+  }
+  displayToastMessage( String message , BuildContext context)
+{
+  Fluttertoast.showToast(msg: message);
+}
+
+
+
 }
