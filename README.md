@@ -1,6 +1,5 @@
 # mowasla_prototype
 
-Tarek knock knock
 
 ## Getting Started
 
