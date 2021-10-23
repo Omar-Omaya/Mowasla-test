@@ -5,31 +5,28 @@ import 'package:mowasla_prototype/Register/signIn.dart';
 import 'package:mowasla_prototype/Register/signUp.dart';
 import 'package:mowasla_prototype/mainScreen.dart';
 
-void main() async
-{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
 }
 
-DatabaseReference usersRef = FirebaseDatabase.instance.reference().child("users");
+DatabaseReference usersRef =
+    FirebaseDatabase.instance.reference().child("users");
 
 class MyApp extends StatelessWidget {
-  const MyApp({ Key? key }) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
-      initialRoute: mainScreen.idScreen,
-      routes: 
-      {
-        signUp.idScreen : (context) => signUp(),
-        signIn.idScreen : (context) => signIn(),
-        mainScreen.idScreen : (context) => mainScreen(),
+      initialRoute: signUp.idScreen,
+      routes: {
+        signUp.idScreen: (context) => signUp(),
+        signIn.idScreen: (context) => signIn(),
+        mainScreen.idScreen: (context) => mainScreen(),
       },
       debugShowCheckedModeBanner: false,
-      
     );
   }
 }
