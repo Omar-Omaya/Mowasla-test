@@ -1,10 +1,12 @@
 import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart' as _Location;
 import 'package:mowasla_prototype/Register/signUp.dart';
 import 'package:mowasla_prototype/StartupPage.dart';
 import 'package:mowasla_prototype/all_Widgets/Divider.dart';
+import 'package:mowasla_prototype/main.dart';
 import 'package:mowasla_prototype/mainScreen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -19,6 +21,28 @@ class mainScreen extends StatefulWidget {
 }
 
 class _mainScreenState extends State<mainScreen> {
+  var u = {};
+  @override
+  void initState() {
+    super.initState();
+    storeUserLocation();
+
+    getUsersLocation();
+
+    usersRef.onChildChanged.forEach((element) {
+      var doc = element.snapshot.value;
+      markers.add(Marker(
+          markerId: MarkerId(doc["email"]),
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+          zIndex: 30,
+          position: LatLng(doc["lat"], doc["long"])));
+      setState(() {});
+    });
+  }
+
+  List<Marker> markers = [];
+
   Completer<GoogleMapController> _controllerGoogleMap = Completer();
 
   late GoogleMapController newGoogleMapController;
@@ -28,6 +52,28 @@ class _mainScreenState extends State<mainScreen> {
   var geoLocator = Geolocator();
 
   double bottomPaddingOfMap = 0;
+
+  _Location.Location location = new _Location.Location();
+
+  getUsersLocation() async {
+    await usersRef.get().then((value) => u = value.value);
+    u.forEach((k, v) => markers.add(Marker(
+        markerId: MarkerId(v["email"].toString()),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+        zIndex: 30,
+        position: LatLng(v["lat"], v["long"]))));
+
+    setState(() {});
+  }
+
+  storeUserLocation() {
+    location.onLocationChanged.listen((_Location.LocationData currentLocation) {
+      var lat = userId + "/lat";
+      var long = userId + "/long";
+      usersRef.update({lat: currentLocation.latitude});
+      usersRef.update({long: currentLocation.longitude});
+    });
+  }
 
   void locatePosition() async {
     Position position = await Geolocator.getCurrentPosition(
@@ -50,6 +96,7 @@ class _mainScreenState extends State<mainScreen> {
       body: Stack(
         children: [
           GoogleMap(
+            markers: markers.toSet(),
             padding: EdgeInsets.only(bottom: bottomPaddingOfMap),
             mapType: MapType.normal,
             myLocationButtonEnabled: true,

@@ -14,13 +14,15 @@ void main() async {
 DatabaseReference usersRef =
     FirebaseDatabase.instance.reference().child("users");
 
+String userId = "";
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: signUp.idScreen,
+      initialRoute: signIn.idScreen,
       routes: {
         signUp.idScreen: (context) => signUp(),
         signIn.idScreen: (context) => signIn(),
