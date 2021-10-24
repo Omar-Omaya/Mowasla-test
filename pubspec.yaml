@@ -75,7 +75,10 @@ flutter:
     - assets/Images/White.PNG
     - assets/Images/action.png
     - assets/Images/action2.png
+    - assets/images/Bus.png
     - assets/Images/Bus.png
+    - assets/images/car.png
+    - assets/Images/car.png
     - assets/Images/FastB1.png
     - assets/Images/near_Places.png
     - assets/Images/tripCard2.png

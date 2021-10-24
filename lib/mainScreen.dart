@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:location/location.dart' as _Location;
 import 'package:mowasla_prototype/Register/signUp.dart';
 import 'package:mowasla_prototype/StartupPage.dart';
@@ -10,6 +12,7 @@ import 'package:mowasla_prototype/main.dart';
 import 'package:mowasla_prototype/mainScreen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:ui' as ui;
 
 class mainScreen extends StatefulWidget {
   static const String idScreen = "MainScreen";
@@ -22,24 +25,15 @@ class mainScreen extends StatefulWidget {
 
 class _mainScreenState extends State<mainScreen> {
   var u = {};
+
   @override
   void initState() {
     super.initState();
+    setCustomMapPin();
     storeUserLocation();
-
-    getUsersLocation();
-
-    usersRef.onChildChanged.forEach((element) {
-      var doc = element.snapshot.value;
-      markers.add(Marker(
-          markerId: MarkerId(doc["email"]),
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
-          zIndex: 30,
-          position: LatLng(doc["lat"], doc["long"])));
-      setState(() {});
-    });
   }
+
+  late BitmapDescriptor pinLocationIcon;
 
   List<Marker> markers = [];
 
@@ -55,11 +49,26 @@ class _mainScreenState extends State<mainScreen> {
 
   _Location.Location location = new _Location.Location();
 
+  static Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
+  }
+
   getUsersLocation() async {
     await usersRef.get().then((value) => u = value.value);
+    u.remove(userId);
     u.forEach((k, v) => markers.add(Marker(
         markerId: MarkerId(v["email"].toString()),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+        infoWindow: InfoWindow(title: v["name"].toString()),
+        draggable: false,
+        icon: pinLocationIcon,
+        flat: true,
+        anchor: Offset(0.5, 0.5),
         zIndex: 30,
         position: LatLng(v["lat"], v["long"]))));
 
@@ -85,6 +94,29 @@ class _mainScreenState extends State<mainScreen> {
         new CameraPosition(target: latLatPosiotion, zoom: 14);
     newGoogleMapController
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
+
+  void setCustomMapPin() async {
+    pinLocationIcon = BitmapDescriptor.fromBytes(
+        await getBytesFromAsset('assets/Images/car.png', 64));
+
+    setState(() {});
+
+    getUsersLocation();
+
+    usersRef.onChildChanged.forEach((element) {
+      var doc = element.snapshot.value;
+      markers.add(Marker(
+          markerId: MarkerId(doc["email"]),
+          infoWindow: InfoWindow(title: doc["name"].toString()),
+          draggable: false,
+          icon: pinLocationIcon,
+          flat: true,
+          anchor: Offset(0.5, 0.5),
+          zIndex: 30,
+          position: LatLng(doc["lat"], doc["long"])));
+      setState(() {});
+    });
   }
 
   @override
