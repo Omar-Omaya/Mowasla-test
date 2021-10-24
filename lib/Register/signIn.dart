@@ -121,7 +121,7 @@ class signIn extends StatelessWidget {
     }))
         .user!;
     if (firebaseUser != null) {
-      usersRef.child(firebaseUser.uid).once().then((DataSnapshot snap) {
+      driversRef.child(firebaseUser.uid).once().then((DataSnapshot snap) {
         if (snap.value != null) {
           Navigator.pushNamedAndRemoveUntil(
               context, mainScreen.idScreen, (route) => false);

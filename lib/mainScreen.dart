@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:drivers_app/configMaps.dart';
+import 'package:drivers_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drivers_app/Register/signUp.dart';
@@ -8,6 +10,8 @@ import 'package:drivers_app/all_Widgets/Divider.dart';
 import 'package:drivers_app/mainScreen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
+
 
 class mainScreen extends StatefulWidget {
   static const String idScreen = "MainScreen";
@@ -50,7 +54,6 @@ class _mainScreenState extends State<mainScreen> {
       body: Stack(
         children: [
           GoogleMap(
-            padding: EdgeInsets.only(bottom: bottomPaddingOfMap),
             mapType: MapType.normal,
             myLocationButtonEnabled: true,
             initialCameraPosition: mainScreen._kGooglePlex,
@@ -60,15 +63,41 @@ class _mainScreenState extends State<mainScreen> {
             onMapCreated: (GoogleMapController controller) {
               _controllerGoogleMap.complete(controller);
               newGoogleMapController = controller;
-              setState(() {
-                bottomPaddingOfMap = 200.0;
-              });
-
               locatePosition();
             },
           ),
+          ElevatedButton(onPressed: () {
+            goOnline();
+            getLocationUpdates();
+          }, child: Icon(Icons.update)),
         ],
       ),
     );
+  }
+
+
+
+  void goOnline() async{
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    currentPosition = position;
+
+    Geofire.initialize("availableDrivers");
+    Geofire.setLocation(currentfirebaseUser.uid, currentPosition.latitude, currentPosition.longitude);
+
+    driversRef.onValue.listen((event) {
+
+    });
+  }
+
+  void getLocationUpdates(){
+
+    streamSubscription = Geolocator.getPositionStream().listen((Position position) {
+      currentPosition = position;
+      Geofire.setLocation(currentfirebaseUser.uid, position.latitude, position.longitude);
+      LatLng latlng = LatLng(position.latitude, position.longitude);
+
+      newGoogleMapController.animateCamera(CameraUpdate.newLatLng(latlng));
+    });
   }
 }
