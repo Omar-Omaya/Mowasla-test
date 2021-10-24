@@ -107,15 +107,17 @@ class _mainScreenState extends State<mainScreen> {
 
     usersRef.onChildChanged.forEach((element) {
       var doc = element.snapshot.value;
-      markers.add(Marker(
-          markerId: MarkerId(doc["email"]),
-          infoWindow: InfoWindow(title: doc["name"].toString()),
-          draggable: false,
-          icon: pinLocationIcon,
-          flat: true,
-          anchor: Offset(0.5, 0.5),
-          zIndex: 30,
-          position: LatLng(doc["lat"], doc["long"])));
+      doc["type"] == "rider"
+          ? null
+          : markers.add(Marker(
+              markerId: MarkerId(doc["email"]),
+              infoWindow: InfoWindow(title: doc["name"].toString()),
+              draggable: false,
+              icon: pinLocationIcon,
+              flat: true,
+              anchor: Offset(0.5, 0.5),
+              zIndex: 30,
+              position: LatLng(doc["lat"], doc["long"])));
       setState(() {});
     });
   }
