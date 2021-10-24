@@ -107,7 +107,9 @@ class _mainScreenState extends State<mainScreen> {
 
     usersRef.onChildChanged.forEach((element) {
       var doc = element.snapshot.value;
-      doc["type"] == "rider"
+      var key = element.snapshot.key;
+
+      doc["type"] == "rider" || key == userId
           ? null
           : markers.add(Marker(
               markerId: MarkerId(doc["email"]),
