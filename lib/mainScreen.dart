@@ -67,6 +67,7 @@ class _mainScreenState extends State<mainScreen> {
         markerId: MarkerId(v["email"].toString()),
         infoWindow: InfoWindow(title: v["name"].toString()),
         draggable: false,
+        rotation: v["rotation"],
         icon: pinLocationIcon,
         flat: true,
         anchor: Offset(0.5, 0.5),
@@ -80,8 +81,10 @@ class _mainScreenState extends State<mainScreen> {
     location.onLocationChanged.listen((_Location.LocationData currentLocation) {
       var lat = userId + "/lat";
       var long = userId + "/long";
+      var rotation = userId + "/rotation";
       usersRef.update({lat: currentLocation.latitude});
       usersRef.update({long: currentLocation.longitude});
+      usersRef.update({rotation: currentLocation.heading});
     });
   }
 
@@ -115,6 +118,7 @@ class _mainScreenState extends State<mainScreen> {
               markerId: MarkerId(doc["email"]),
               infoWindow: InfoWindow(title: doc["name"].toString()),
               draggable: false,
+              rotation: doc["rotation"],
               icon: pinLocationIcon,
               flat: true,
               anchor: Offset(0.5, 0.5),
