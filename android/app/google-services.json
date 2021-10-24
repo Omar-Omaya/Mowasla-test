@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "121067503161",
+    "firebase_url": "https://mowaslaapp-default-rtdb.firebaseio.com",
+    "project_id": "mowaslaapp",
+    "storage_bucket": "mowaslaapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121067503161:android:446546cf5b344a0a78d7e8",
+        "android_client_info": {
+          "package_name": "com.example.driversapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121067503161-d350nfs65j28sgmpcs3h2hqqjq9060li.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzf4qs7a8DtdqT-ZKGsmCTDlmAeH0oSSI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121067503161-d350nfs65j28sgmpcs3h2hqqjq9060li.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121067503161:android:208d2b93b32a555178d7e8",
+        "android_client_info": {
+          "package_name": "com.example.mowaslaprototype"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121067503161-d350nfs65j28sgmpcs3h2hqqjq9060li.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzf4qs7a8DtdqT-ZKGsmCTDlmAeH0oSSI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121067503161-d350nfs65j28sgmpcs3h2hqqjq9060li.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
