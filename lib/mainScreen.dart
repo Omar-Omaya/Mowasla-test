@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mowasla_prototype/Assistants/assistantMethods.dart';
 import 'package:mowasla_prototype/Register/signUp.dart';
 import 'package:mowasla_prototype/StartupPage.dart';
 import 'package:mowasla_prototype/all_Widgets/Divider.dart';
@@ -40,6 +41,9 @@ class _mainScreenState extends State<mainScreen> {
       LatLng latLatPosiotion = LatLng(position.latitude,position.longitude);
       CameraPosition cameraPosition = new CameraPosition(target: latLatPosiotion,zoom: 14);
       newGoogleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+      String address = await AssistantMehtods.searchCoodinateAddress(position);
+      print("this is your Address :: " + address);
 
     }
 

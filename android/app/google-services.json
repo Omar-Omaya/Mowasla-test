@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "470124059707",
-    "project_id": "mowasla-back",
-    "storage_bucket": "mowasla-back.appspot.com"
+    "project_number": "121067503161",
+    "project_id": "mowaslaapp",
+    "storage_bucket": "mowaslaapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:470124059707:android:5bb02a78f32018e29a101e",
+        "mobilesdk_app_id": "1:121067503161:android:208d2b93b32a555178d7e8",
         "android_client_info": {
           "package_name": "com.example.mowaslaprototype"
         }
       },
       "oauth_client": [
         {
-          "client_id": "470124059707-jnmeucg41f6br37as1gps2pb73va7rkk.apps.googleusercontent.com",
+          "client_id": "121067503161-d350nfs65j28sgmpcs3h2hqqjq9060li.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDj4eD4NQtxhND2mRlINTRunkR1IpEUf1I"
+          "current_key": "AIzaSyCzf4qs7a8DtdqT-ZKGsmCTDlmAeH0oSSI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "470124059707-jnmeucg41f6br37as1gps2pb73va7rkk.apps.googleusercontent.com",
+              "client_id": "121067503161-d350nfs65j28sgmpcs3h2hqqjq9060li.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
