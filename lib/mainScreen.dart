@@ -62,6 +62,7 @@ class _mainScreenState extends State<mainScreen> {
   getUsersLocation() async {
     await usersRef.get().then((value) => u = value.value);
     u.remove(userId);
+    u.removeWhere((key, value) => value["type"] == "rider");
     u.forEach((k, v) => markers.add(Marker(
         markerId: MarkerId(v["email"].toString()),
         infoWindow: InfoWindow(title: v["name"].toString()),
