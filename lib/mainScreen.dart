@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'dart:js';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mowasla_prototype/Assistants/assistantMethods.dart';
+import 'package:mowasla_prototype/Assistants/geoFireAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
+import 'package:mowasla_prototype/Models/nearByAvailableDrivers.dart';
 import 'package:mowasla_prototype/StartupPage.dart';
 import 'package:mowasla_prototype/all_Widgets/Divider.dart';
 import 'package:mowasla_prototype/mainScreen.dart';
@@ -11,14 +12,12 @@ import 'package:mowasla_prototype/SearchScreen/searchScreen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_geofire/flutter_geofire.dart';
 
 class mainScreen extends StatefulWidget {
-
   static const String idScreen = "MainScreen";
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(31.201330,29.939520 ),
-    zoom: 14.4746 );
+  static final CameraPosition _kGooglePlex =
+      CameraPosition(target: LatLng(31.201330, 29.939520), zoom: 14.4746);
 
   @override
   State<mainScreen> createState() => _mainScreenState();
@@ -27,27 +26,35 @@ class mainScreen extends StatefulWidget {
 class _mainScreenState extends State<mainScreen> {
   Completer<GoogleMapController> _controllerGoogleMap = Completer();
 
-    late GoogleMapController newGoogleMapController;
+  late GoogleMapController newGoogleMapController;
 
-    late Position currentPosition;
+  Set<Marker> markerSet = Set<Marker>();
 
-    var geoLocator = Geolocator();
+  late Position currentPosition;
 
-    double bottomPaddingOfMap =0;
+  var geoLocator = Geolocator();
 
-    void locatePosition() async
-    {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      currentPosition = position;
+  bool nearbyAvailableDriverKeysLoaded = false;
 
-      LatLng latLatPosiotion = LatLng(position.latitude,position.longitude);
-      CameraPosition cameraPosition = new CameraPosition(target: latLatPosiotion,zoom: 14);
-      newGoogleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  double bottomPaddingOfMap = 0;
 
-      String address = await AssistantMehtods.searchCoodinateAddress(position, context);
-      print("this is your Address :: " + address);
+  void locatePosition() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    currentPosition = position;
 
-    }
+    LatLng latLatPosiotion = LatLng(position.latitude, position.longitude);
+    CameraPosition cameraPosition =
+        new CameraPosition(target: latLatPosiotion, zoom: 14);
+    newGoogleMapController
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+    String address =
+        await AssistantMehtods.searchCoodinateAddress(position, context);
+    print("this is your Address :: " + address);
+
+    initGeoFireListener();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,134 +62,234 @@ class _mainScreenState extends State<mainScreen> {
       appBar: AppBar(
         title: Text("Main Screen"),
       ),
-
-      body: Stack(children: [
- 
+      body: Stack(
+        children: [
           GoogleMap(
             padding: EdgeInsets.only(bottom: bottomPaddingOfMap),
-          mapType: MapType.normal,
-          myLocationButtonEnabled: true,
-           initialCameraPosition: mainScreen._kGooglePlex ,
-           myLocationEnabled: true,
-           zoomGesturesEnabled: true,
-           zoomControlsEnabled: true,
-           onMapCreated: (GoogleMapController controller)
-           {
-             _controllerGoogleMap.complete(controller);
-             newGoogleMapController = controller;
-             setState(() {
-               bottomPaddingOfMap = 200.0;
-             });
-             
-             
-             locatePosition();
-           },
-        ),
-        Positioned(
-          left: 0.0,
-          right: 0.0,
-          bottom: 0.0,
-          child: GestureDetector(
-            onTap: ()
-            {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchScreen()));
+            mapType: MapType.normal,
+            myLocationButtonEnabled: true,
+            initialCameraPosition: mainScreen._kGooglePlex,
+            myLocationEnabled: true,
+            zoomGesturesEnabled: true,
+            zoomControlsEnabled: true,
+            onMapCreated: (GoogleMapController controller) {
+              _controllerGoogleMap.complete(controller);
+              newGoogleMapController = controller;
+              setState(() {
+                bottomPaddingOfMap = 200.0;
+              });
+
+              locatePosition();
             },
-            child: Container(
-              height: 300.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    blurRadius: 16.0,
-                    spreadRadius: 0.5,
-                    offset: Offset(0.7,0.7)
-          
-                  )
-                ]
-              ),
-              child: Column(
-                children: [
-                  SizedBox(height: 6.0,),
-                  Text("Hi there,", style:TextStyle(fontSize: 10.0),),
-                  Text("Where to?," ,style:TextStyle(fontSize: 15.0),),
-                  SizedBox(height: 20.0,),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5.0),
-                        boxShadow: [
-                          BoxShadow(
-                            
-                            color: Colors.black54,
-                            blurRadius: 6.0,
-                            spreadRadius: 0.5,
-                            offset: Offset(0.7,0.7),
-                          )
-                        ]
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.search, color: Colors.yellowAccent,),
-                          SizedBox(width: 10.0,),
-                          Text("Search Drop Off")
-                        ],
+            markers: markerSet,
+          ),
+          Positioned(
+            left: 0.0,
+            right: 0.0,
+            bottom: 0.0,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SearchScreen()));
+              },
+              child: Container(
+                height: 300.0,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(18.0),
+                        topRight: Radius.circular(18.0)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 16.0,
+                          spreadRadius: 0.5,
+                          offset: Offset(0.7, 0.7))
+                    ]),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 6.0,
+                    ),
+                    Text(
+                      "Hi there,",
+                      style: TextStyle(fontSize: 10.0),
+                    ),
+                    Text(
+                      "Where to?,",
+                      style: TextStyle(fontSize: 15.0),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 6.0,
+                                spreadRadius: 0.5,
+                                offset: Offset(0.7, 0.7),
+                              )
+                            ]),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.search,
+                              color: Colors.yellowAccent,
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Text("Search Drop Off")
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-          
-                  SizedBox(height: 24.0,),
-                  Row(
-                    children: [
-                      Icon(Icons.home,color: Colors.grey,),
-                      SizedBox(width:12.0,),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            Provider.of<AppData>(context).pickupLocation!=null ?
-                            Provider.of<AppData>(context).pickupLocation!.placeName 
-                            :"Add Home"
-                          ),
-                          SizedBox(height: 4.0,),
-                          Text("Your living home address",style: TextStyle(color: Colors.grey[200],fontSize: 12.0),)
-          
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 10.0,),
-                  DividerWidget(),
-                  SizedBox(height:16.0),
-                  Row(
-                    children: [
-                      Icon(Icons.work,color: Colors.grey,),
-                      SizedBox(width:12.0,),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Add Work"),
-                          SizedBox(height: 4.0,),
-                          Text("Your office address",style: TextStyle(color: Colors.grey[200],fontSize: 12.0),)
-          
-                        ],
-                      )
-                    ],
-                  )
-                ],
+                    SizedBox(
+                      height: 24.0,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.home,
+                          color: Colors.grey,
+                        ),
+                        SizedBox(
+                          width: 12.0,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(Provider.of<AppData>(context).pickupLocation !=
+                                    null
+                                ? Provider.of<AppData>(context)
+                                    .pickupLocation!
+                                    .placeName
+                                : "Add Home"),
+                            SizedBox(
+                              height: 4.0,
+                            ),
+                            Text(
+                              "Your living home address",
+                              style: TextStyle(
+                                  color: Colors.grey[200], fontSize: 12.0),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    DividerWidget(),
+                    SizedBox(height: 16.0),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.work,
+                          color: Colors.grey,
+                        ),
+                        SizedBox(
+                          width: 12.0,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Add Work"),
+                            SizedBox(
+                              height: 4.0,
+                            ),
+                            Text(
+                              "Your office address",
+                              style: TextStyle(
+                                  color: Colors.grey[200], fontSize: 12.0),
+                            )
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          
-        )
-
-
-
-      ],),
-      
+          )
+        ],
+      ),
     );
+  }
+
+  void initGeoFireListener() {
+    Geofire.initialize('availableDrivers');
+    Geofire.queryAtLocation(
+            currentPosition.latitude, currentPosition.longitude, 10)!
+        .listen((map) {
+      if (map != null) {
+        var callBack = map['callBack'];
+
+        switch (callBack) {
+          case Geofire.onKeyEntered:
+            NearbyAvailableDrivers nearbyAvailableDrivers =
+                NearbyAvailableDrivers(
+                    key: map['key'],
+                    latitude: map['latitude'],
+                    longitude: map['longitude']);
+            GeoFireAssistant.nearByAvailableDriversList
+                .add(nearbyAvailableDrivers);
+            if (nearbyAvailableDriverKeysLoaded==true){
+              updateAvailableDriversOnMap();
+            }
+            break;
+
+          case Geofire.onKeyExited:
+            GeoFireAssistant.removeDriverFromList(map['key']);
+            updateAvailableDriversOnMap();
+            break;
+
+          case Geofire.onKeyMoved:
+            NearbyAvailableDrivers nearbyAvailableDrivers =
+                NearbyAvailableDrivers(
+                    key: map['key'],
+                    latitude: map['latitude'],
+                    longitude: map['longitude']);
+            GeoFireAssistant.updateDriverNearbyLocation(nearbyAvailableDrivers);
+            updateAvailableDriversOnMap();
+            break;
+
+          case Geofire.onGeoQueryReady:
+            updateAvailableDriversOnMap();
+            break;
+        }
+      }
+    });
+  }
+
+  void updateAvailableDriversOnMap() {
+    setState(() {
+      markerSet.clear();
+    });
+
+    Set<Marker> tMarkers = Set<Marker>();
+
+    for (NearbyAvailableDrivers driver
+        in GeoFireAssistant.nearByAvailableDriversList) {
+      LatLng driverAvailableLocation =
+          LatLng(driver.latitude, driver.longitude);
+
+      Marker marker = Marker(
+        markerId: MarkerId(""),
+        position: driverAvailableLocation,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+        rotation: AssistantMehtods.createRandomNumber(360),
+      );
+      tMarkers.add(marker);
+    }
+    setState(() {
+      markerSet = tMarkers;
+    });
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:mowasla_prototype/Assistants/RequestAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
@@ -31,5 +33,11 @@ class AssistantMehtods
       Provider.of<AppData>(context, listen: false).updatePickUpLocationAddress(userPickupAddress);
     }
     return placeAddress;
+  }
+
+  static double createRandomNumber(int num){
+    var random = Random();
+    int randomNumber = random.nextInt(num);
+    return randomNumber.toDouble();
   }
 }
