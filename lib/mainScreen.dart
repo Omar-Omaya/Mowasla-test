@@ -34,6 +34,8 @@ class _mainScreenState extends State<mainScreen> {
 
   var geoLocator = Geolocator();
 
+  var nearByIcon = null;
+
   bool nearbyAvailableDriverKeysLoaded = false;
 
   double bottomPaddingOfMap = 0;
@@ -58,6 +60,7 @@ class _mainScreenState extends State<mainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    createIconMarker();
     return Scaffold(
       appBar: AppBar(
         title: Text("Main Screen"),
@@ -291,5 +294,13 @@ class _mainScreenState extends State<mainScreen> {
     setState(() {
       markerSet = tMarkers;
     });
+  }
+  void createIconMarker(){
+    if (nearByIcon == null){
+      ImageConfiguration imageConfiguration = createLocalImageConfiguration(context, size: Size(2, 2));
+      BitmapDescriptor.fromAssetImage(imageConfiguration, 'assets/images/car_android.png').then((value){
+        nearByIcon = value;
+      });
+    }
   }
 }
