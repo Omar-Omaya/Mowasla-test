@@ -57,10 +57,14 @@ class _mainScreenState extends State<mainScreen> {
               _controllerGoogleMap.complete(controller);
               newGoogleMapController = controller;
               locatePosition();
-              goOnline();
-              getLocationUpdates();
             },
           ),
+          ElevatedButton(
+              onPressed: () {
+                goOnline();
+                getLocationUpdates();
+              },
+              child: Icon(Icons.update))
         ],
       ),
     );
