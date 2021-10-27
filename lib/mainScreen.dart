@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:ffi';
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mowasla_prototype/Assistants/assistantMethods.dart';
 import 'package:mowasla_prototype/Assistants/geoFireAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
@@ -17,7 +20,7 @@ import 'package:flutter_geofire/flutter_geofire.dart';
 class mainScreen extends StatefulWidget {
   static const String idScreen = "MainScreen";
   static final CameraPosition _kGooglePlex =
-      CameraPosition(target: LatLng(31.201330, 29.939520), zoom: 14.4746);
+      CameraPosition(target: LatLng(31.2264784, 29.9379636), zoom: 14.4746);
 
   @override
   State<mainScreen> createState() => _mainScreenState();
@@ -55,7 +58,9 @@ class _mainScreenState extends State<mainScreen> {
         await AssistantMehtods.searchCoodinateAddress(position, context);
     print("this is your Address :: " + address);
 
-    initGeoFireListener();
+    Uint8List imageBytes = await createIconMarker();
+    initGeoFireListener(imageBytes);
+
   }
 
   @override
@@ -81,7 +86,6 @@ class _mainScreenState extends State<mainScreen> {
               setState(() {
                 bottomPaddingOfMap = 200.0;
               });
-
               locatePosition();
             },
             markers: markerSet,
@@ -220,13 +224,13 @@ class _mainScreenState extends State<mainScreen> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  void initGeoFireListener() {
+  void initGeoFireListener(Uint8List imageBytes) {
     Geofire.initialize('availableDrivers');
     Geofire.queryAtLocation(
             currentPosition.latitude, currentPosition.longitude, 10)!
@@ -244,13 +248,13 @@ class _mainScreenState extends State<mainScreen> {
             GeoFireAssistant.nearByAvailableDriversList
                 .add(nearbyAvailableDrivers);
             if (nearbyAvailableDriverKeysLoaded==true){
-              updateAvailableDriversOnMap();
+              updateAvailableDriversOnMap(imageBytes);
             }
             break;
 
           case Geofire.onKeyExited:
             GeoFireAssistant.removeDriverFromList(map['key']);
-            updateAvailableDriversOnMap();
+            updateAvailableDriversOnMap(imageBytes);
             break;
 
           case Geofire.onKeyMoved:
@@ -260,18 +264,18 @@ class _mainScreenState extends State<mainScreen> {
                     latitude: map['latitude'],
                     longitude: map['longitude']);
             GeoFireAssistant.updateDriverNearbyLocation(nearbyAvailableDrivers);
-            updateAvailableDriversOnMap();
+            updateAvailableDriversOnMap(imageBytes);
             break;
 
           case Geofire.onGeoQueryReady:
-            updateAvailableDriversOnMap();
+            updateAvailableDriversOnMap(imageBytes);
             break;
         }
       }
     });
   }
 
-  void updateAvailableDriversOnMap() {
+  void updateAvailableDriversOnMap(Uint8List imageBytes) {
     setState(() {
       markerSet.clear();
     });
@@ -286,8 +290,9 @@ class _mainScreenState extends State<mainScreen> {
       Marker marker = Marker(
         markerId: MarkerId(""),
         position: driverAvailableLocation,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
-        rotation: AssistantMehtods.createRandomNumber(360),
+        icon: BitmapDescriptor.fromBytes(imageBytes),
+        rotation: 20,
+        anchor: Offset(0.5, 0.5),
       );
       tMarkers.add(marker);
     }
@@ -295,12 +300,8 @@ class _mainScreenState extends State<mainScreen> {
       markerSet = tMarkers;
     });
   }
-  void createIconMarker(){
-    if (nearByIcon == null){
-      ImageConfiguration imageConfiguration = createLocalImageConfiguration(context, size: Size(2, 2));
-      BitmapDescriptor.fromAssetImage(imageConfiguration, 'assets/images/car_android.png').then((value){
-        nearByIcon = value;
-      });
+  Future<Uint8List> createIconMarker() async{
+    ByteData byteData = await DefaultAssetBundle.of(context).load("assets/car.png");
+    return byteData.buffer.asUint8List();
     }
-  }
 }
