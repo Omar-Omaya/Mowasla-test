@@ -11,7 +11,7 @@ import 'package:flutter_geofire/flutter_geofire.dart';
 class mainScreen extends StatefulWidget {
   static const String idScreen = "MainScreen";
   static final CameraPosition _kGooglePlex =
-      CameraPosition(target: LatLng(31.201330, 29.939520), zoom: 25);
+      CameraPosition(target: LatLng(31.201330, 29.939520), zoom: 20);
 
   @override
   State<mainScreen> createState() => _mainScreenState();
@@ -35,7 +35,7 @@ class _mainScreenState extends State<mainScreen> {
 
     LatLng latLatPosiotion = LatLng(position.latitude, position.longitude);
     CameraPosition cameraPosition =
-        new CameraPosition(target: latLatPosiotion, zoom: 25);
+        new CameraPosition(target: latLatPosiotion, zoom: 20);
   }
 
   @override
