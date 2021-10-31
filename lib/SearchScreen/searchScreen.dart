@@ -17,14 +17,10 @@ class _SearchScreenState extends State<SearchScreen> {
   List<PlacePredictions> placePredictionList = [];
 
   @override
-
-
   Widget build(BuildContext context) {
 
       TextEditingController pickUpTextEdtingController = TextEditingController();
       TextEditingController dropOffTextEditingController = TextEditingController();
-      
-      
       String placeAddress = Provider.of<AppData>(context).pickupLocation!.placeName ?? "";
       pickUpTextEdtingController.text = placeAddress;
       
@@ -138,11 +134,11 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
           ),(placePredictionList.length > 0) ? Padding
           (padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-          child: ListView.separated(padding: EdgeInsets.all(0.0), 
+          child: ListView.separated(padding: EdgeInsets.all(0.0),
           itemBuilder: (context, index)
           {
-            return PredictionTile(placePredictions:placePredictionList[index] ,);
-          }, 
+            return PredictionTile(placePredictions: placePredictionList[index]);
+          },
           separatorBuilder: (BuildContext context, int index) => DividerWidget()
           ,itemCount: placePredictionList.length,
           shrinkWrap: true,
@@ -190,15 +186,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
 class PredictionTile extends StatelessWidget {
 
-   final PlacePredictions placePredictions;
+  PredictionTile({required this.placePredictions});
 
-   
-   
-
-   
-   
-
- 
+   late final PlacePredictions placePredictions;
 
   @override
   Widget build(BuildContext context) {

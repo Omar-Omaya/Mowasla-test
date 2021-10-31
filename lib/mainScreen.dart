@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
+import 'package:location/location.dart';
 
 class mainScreen extends StatefulWidget {
   static const String idScreen = "MainScreen";
@@ -31,6 +31,10 @@ class _mainScreenState extends State<mainScreen> {
 
   late GoogleMapController newGoogleMapController;
 
+  final Location _locationTracker = Location();
+  late StreamSubscription _locationSubscription;
+  double rotation = 0;
+
   Set<Marker> markerSet = Set<Marker>();
 
   late Position currentPosition;
@@ -44,9 +48,14 @@ class _mainScreenState extends State<mainScreen> {
   double bottomPaddingOfMap = 0;
 
   void locatePosition() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator.getCurrentPosition();
     currentPosition = position;
+
+    var location = _locationTracker.getLocation();
+
+    _locationSubscription = _locationTracker.onLocationChanged.listen((newLocalData) {
+      rotation = newLocalData.heading!;
+    });
 
     LatLng latLatPosiotion = LatLng(position.latitude, position.longitude);
     CameraPosition cameraPosition =
@@ -291,7 +300,7 @@ class _mainScreenState extends State<mainScreen> {
         markerId: MarkerId(""),
         position: driverAvailableLocation,
         icon: BitmapDescriptor.fromBytes(imageBytes),
-        rotation: 20,
+        rotation: rotation,
         anchor: Offset(0.5, 0.5),
       );
       tMarkers.add(marker);
