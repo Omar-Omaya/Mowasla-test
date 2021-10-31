@@ -8,6 +8,8 @@ import 'package:drivers_app/StartupPage.dart';
 import 'package:drivers_app/mainScreen.dart';
 import 'package:drivers_app/main.dart';
 
+import '../configMaps.dart';
+
 class signIn extends StatelessWidget {
   static const String idScreen = "login";
   TextEditingController emailTextEditingController = TextEditingController();

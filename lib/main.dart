@@ -29,16 +29,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
 
-      initialRoute: mainScreen.idScreen,
-      routes: 
-      {
+      initialRoute: signIn.idScreen,
+      routes: {
         signUp.idScreen : (context) => signUp(),
         signIn.idScreen : (context) => signIn(),
         mainScreen.idScreen : (context) => mainScreen(),
         CarInfoScreen.idScreen : (context) => CarInfoScreen(),
       },
       debugShowCheckedModeBanner: false,
-      
     );
   }
 }
