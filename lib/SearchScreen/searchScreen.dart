@@ -158,7 +158,7 @@ class _SearchScreenState extends State<SearchScreen> {
       String autoCompleteUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placename&key=AIzaSyDpGaGpj9uoLbfhxGzXru_25FkoOjsl_mI&sessiontoken=1234567890&components=country:eg";
 
       var res = await RequestAssistant.getRequest(autoCompleteUrl);
-      print(res);
+      
 
       if(res == "failed")
       {
@@ -170,10 +170,13 @@ class _SearchScreenState extends State<SearchScreen> {
         var predictions = res["predictions"];
 
         var placeList = (predictions as List).map((e) => PlacePredictions.fromJson(e)).toList();
+        
         setState(() {
           placePredictionList = placeList;
           
+          
         });
+
 
 
       }
@@ -219,7 +222,6 @@ class PredictionTile extends StatelessWidget {
       ),
       
     );
-   print(placePredictions.main_text);
   }
   
   
