@@ -67,14 +67,12 @@ class _mainScreenState extends State<mainScreen> {
         await AssistantMehtods.searchCoodinateAddress(position, context);
     print("this is your Address :: " + address);
 
-    Uint8List imageBytes = await createIconMarker();
-    initGeoFireListener(imageBytes);
+    initGeoFireListener();
 
   }
 
   @override
   Widget build(BuildContext context) {
-    createIconMarker();
     return Scaffold(
       appBar: AppBar(
         title: Text("Main Screen"),
@@ -239,7 +237,7 @@ class _mainScreenState extends State<mainScreen> {
     );
   }
 
-  void initGeoFireListener(Uint8List imageBytes) {
+  void initGeoFireListener() {
     Geofire.initialize('availableDrivers');
     Geofire.queryAtLocation(
             currentPosition.latitude, currentPosition.longitude, 10)!
@@ -257,13 +255,13 @@ class _mainScreenState extends State<mainScreen> {
             GeoFireAssistant.nearByAvailableDriversList
                 .add(nearbyAvailableDrivers);
             if (nearbyAvailableDriverKeysLoaded==true){
-              updateAvailableDriversOnMap(imageBytes);
+              updateAvailableDriversOnMap();
             }
             break;
 
           case Geofire.onKeyExited:
             GeoFireAssistant.removeDriverFromList(map['key']);
-            updateAvailableDriversOnMap(imageBytes);
+            updateAvailableDriversOnMap();
             break;
 
           case Geofire.onKeyMoved:
@@ -273,18 +271,18 @@ class _mainScreenState extends State<mainScreen> {
                     latitude: map['latitude'],
                     longitude: map['longitude']);
             GeoFireAssistant.updateDriverNearbyLocation(nearbyAvailableDrivers);
-            updateAvailableDriversOnMap(imageBytes);
+            updateAvailableDriversOnMap();
             break;
 
           case Geofire.onGeoQueryReady:
-            updateAvailableDriversOnMap(imageBytes);
+            updateAvailableDriversOnMap();
             break;
         }
       }
     });
   }
 
-  void updateAvailableDriversOnMap(Uint8List imageBytes) {
+  void updateAvailableDriversOnMap() {
     setState(() {
       markerSet.clear();
     });
@@ -309,8 +307,4 @@ class _mainScreenState extends State<mainScreen> {
       markerSet = tMarkers;
     });
   }
-  Future<Uint8List> createIconMarker() async{
-    ByteData byteData = await DefaultAssetBundle.of(context).load("assets/car.png");
-    return byteData.buffer.asUint8List();
-    }
 }
