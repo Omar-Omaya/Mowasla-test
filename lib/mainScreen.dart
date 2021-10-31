@@ -102,9 +102,13 @@ class _mainScreenState extends State<mainScreen> {
             right: 0.0,
             bottom: 0.0,
             child: GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SearchScreen()));
+              onTap: () async {
+                    var res =  Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchScreen()));
+
+                    if(res == "obtainDirection" )
+                    {
+                     await getPlaceDirection();
+                    }
               },
               child: Container(
                 height: 300.0,
@@ -235,6 +239,23 @@ class _mainScreenState extends State<mainScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> getPlaceDirection() async 
+  {
+    var initialPos = Provider.of<AppData>(context, listen:  false).pickupLocation;
+    var finalPos = Provider.of<AppData>(context, listen: false).dropOfAddress;
+
+    var pickUplatlng = LatLng(initialPos!.latitude,initialPos.longitude);
+    var dropOffLatlng = LatLng(finalPos!.latitude,finalPos.longitude);
+
+
+    var details = await AssistantMehtods.obtainPlaceDirectionDetails(pickUplatlng, dropOffLatlng);
+
+    print("This is Encoded points::");
+    print(details!.encodedpoints);
+
+
   }
 
   void initGeoFireListener() {
