@@ -299,7 +299,7 @@ class _mainScreenState extends State<mainScreen> {
       Marker marker = Marker(
         markerId: MarkerId(""),
         position: driverAvailableLocation,
-        icon: BitmapDescriptor.fromBytes(imageBytes),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
         rotation: rotation,
         anchor: Offset(0.5, 0.5),
       );
