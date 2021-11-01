@@ -17,6 +17,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:location/location.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+
 
 class mainScreen extends StatefulWidget {
   static const String idScreen = "MainScreen";
@@ -35,18 +37,15 @@ class _mainScreenState extends State<mainScreen> {
   final Location _locationTracker = Location();
   late StreamSubscription _locationSubscription;
   double rotation = 0;
-
   Set<Marker> markerSet = Set<Marker>();
-
   late Position currentPosition;
-
   var geoLocator = Geolocator();
-
   var nearByIcon = null;
-
   bool nearbyAvailableDriverKeysLoaded = false;
-
   double bottomPaddingOfMap = 0;
+
+  List<LatLng> pLineCoerordinates = [];
+  Set<Polyline> polylineSet = {};
 
   void locatePosition() async {
     Position position = await Geolocator.getCurrentPosition();
@@ -88,6 +87,7 @@ class _mainScreenState extends State<mainScreen> {
             myLocationEnabled: true,
             zoomGesturesEnabled: true,
             zoomControlsEnabled: true,
+            polylines: polylineSet,
             onMapCreated: (GoogleMapController controller) {
               _controllerGoogleMap.complete(controller);
               newGoogleMapController = controller;
@@ -274,6 +274,51 @@ class _mainScreenState extends State<mainScreen> {
 
     print("This is Encoded points::");
     print(details!.encodedpoints);
+
+    PolylinePoints polylinePoints = PolylinePoints();
+    List<PointLatLng> decodePolyLinePointsResult = polylinePoints.decodePolyline(details.encodedpoints);
+    if(decodePolyLinePointsResult.isNotEmpty)
+    {
+      decodePolyLinePointsResult.forEach((PointLatLng pointLatLng) {
+        pLineCoerordinates.add(LatLng(pointLatLng.latitude,pointLatLng.longitude));
+
+       });
+    }
+    polylineSet.clear();
+    setState(() {
+         Polyline polyline = Polyline(
+         color: Colors.black,
+         polylineId: PolylineId("PolylineID"),
+         jointType: JointType.round,
+         points: pLineCoerordinates,
+         width: 5,
+         endCap : Cap.roundCap,
+         geodesic: true
+
+       );
+       polylineSet.add(polyline);
+    });
+
+    LatLngBounds latLngBounds;
+    if(pickUplatlng.latitude>dropOffLatlng.latitude && pickUplatlng.longitude > dropOffLatlng.longitude)
+    {
+      latLngBounds = LatLngBounds(southwest: dropOffLatlng,northeast: pickUplatlng);
+    }
+    else if(pickUplatlng.longitude>dropOffLatlng.longitude)
+    {
+      latLngBounds = LatLngBounds(southwest: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude),northeast: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude));
+    }
+    else if(pickUplatlng.latitude>dropOffLatlng.latitude)
+    {
+      latLngBounds = LatLngBounds(southwest: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude),northeast: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude));
+    }
+    else
+    {
+      latLngBounds = LatLngBounds(southwest: dropOffLatlng,northeast: pickUplatlng);
+    }
+
+    newGoogleMapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+
   }
 
   void initGeoFireListener() {
