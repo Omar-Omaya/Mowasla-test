@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mowasla_prototype/Assistants/RequestAssistant.dart';
@@ -28,8 +29,8 @@ class AssistantMehtods
      placeAddress = st1 + " " + st2 + ", " + st3 + ", ";
 
       Address userPickupAddress = new Address();
+      userPickupAddress.latitude = position.latitude;
       userPickupAddress.longitude = position.longitude;
-      userPickupAddress.longitude = position.latitude;
       userPickupAddress.placeName = placeAddress;
 
       Provider.of<AppData>(context, listen: false).updatePickUpLocationAddress(userPickupAddress);
@@ -46,15 +47,14 @@ class AssistantMehtods
   static Future<DirectionDetails?> obtainPlaceDirectionDetails(LatLng initalPosition , LatLng finalPostion) async
   {
     String directionUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=${initalPosition.latitude},${initalPosition.longitude}&destination=${finalPostion.latitude},${finalPostion.longitude}&key=AIzaSyDpGaGpj9uoLbfhxGzXru_25FkoOjsl_mI";
+
     var res = await RequestAssistant.getRequest(directionUrl);
+    print("------------------");
 
-    if(res == "failed")
-    {
-      return null;
-
-    }
 
     DirectionDetails directionDetails = DirectionDetails();
+
+
 
     directionDetails.encodedpoints = res["routes"][0]["overview_polyline"]["points"];
 

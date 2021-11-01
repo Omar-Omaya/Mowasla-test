@@ -9,6 +9,7 @@ import 'package:mowasla_prototype/DataHandler/appData.dart';
 import 'package:mowasla_prototype/Models/nearByAvailableDrivers.dart';
 import 'package:mowasla_prototype/StartupPage.dart';
 import 'package:mowasla_prototype/all_Widgets/Divider.dart';
+import 'package:mowasla_prototype/all_Widgets/progressDialog.dart';
 import 'package:mowasla_prototype/mainScreen.dart';
 import 'package:mowasla_prototype/SearchScreen/searchScreen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -103,12 +104,17 @@ class _mainScreenState extends State<mainScreen> {
             bottom: 0.0,
             child: GestureDetector(
               onTap: () async {
+                    
                     var res =  Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchScreen()));
+                    await getPlaceDirection();
 
-                    if(res == "obtainDirection" )
-                    {
-                     await getPlaceDirection();
-                    }
+                    
+                  
+                    
+
+                    
+                    
+                    
               },
               child: Container(
                 height: 300.0,
@@ -245,15 +251,21 @@ class _mainScreenState extends State<mainScreen> {
   {
     var initialPos = Provider.of<AppData>(context, listen:  false).pickupLocation;
     var finalPos = Provider.of<AppData>(context, listen: false).dropOfAddress;
+    // print(res);
 
     var pickUplatlng = LatLng(initialPos!.latitude,initialPos.longitude);
     var dropOffLatlng = LatLng(finalPos!.latitude,finalPos.longitude);
+
+    showDialog(context: context, builder: (BuildContext context)=> PrograssDialog(message: "Please wait..."));
 
 
     var details = await AssistantMehtods.obtainPlaceDirectionDetails(pickUplatlng, dropOffLatlng);
 
     print("This is Encoded points::");
     print(details!.encodedpoints);
+
+    print("object______");
+    print(details.distanceText);
 
 
   }

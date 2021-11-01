@@ -141,7 +141,7 @@ class _SearchScreenState extends State<SearchScreen> {
             return PredictionTile(placePredictions: placePredictionList[index]);
           },
           separatorBuilder: (BuildContext context, int index) => DividerWidget()
-          ,itemCount: placePredictionList.length,
+          ,itemCount:  placePredictionList.length,
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),),
           )
@@ -252,11 +252,14 @@ class PredictionTile extends StatelessWidget {
       address.placeName = res["result"]["name"];
       address.placeId = placeId;
       address.latitude = res["result"]["geometry"]["location"]["lat"];
-      address.latitude = res["result"]["geometry"]["location"]["lng"];
+      address.longitude = res["result"]["geometry"]["location"]["lng"];
 
       Provider.of<AppData>(context , listen: false).updateDropOffocationAddress(address);
       print("this is Drop off Location :: ");
       print(address.placeName);
+      
+
+      Navigator.pop(context,"obtainDirection");
 
       
       
