@@ -105,8 +105,9 @@ class _mainScreenState extends State<mainScreen> {
             child: GestureDetector(
               onTap: () async {
                     
-                    var res =  Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchScreen()));
-                    await getPlaceDirection();
+                    var res = await Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchScreen()));
+
+                     getPlaceDirection();
 
                     
                   

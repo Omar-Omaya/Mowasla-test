@@ -5,7 +5,11 @@ class PrograssDialog extends StatelessWidget {
 
   String message="";
 
-  PrograssDialog({String? message});
+  PrograssDialog({String? message})
+  {
+    this.message = message!;
+
+  }
 
 
   @override
