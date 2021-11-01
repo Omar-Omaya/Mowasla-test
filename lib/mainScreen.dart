@@ -256,19 +256,24 @@ class _mainScreenState extends State<mainScreen> {
 
     var pickUplatlng = LatLng(initialPos!.latitude,initialPos.longitude);
     var dropOffLatlng = LatLng(finalPos!.latitude,finalPos.longitude);
+    // new Timer(, callback)
 
-    showDialog(context: context, builder: (BuildContext context)=> PrograssDialog(message: "Please wait..."));
+    Timer? timer = Timer(Duration(milliseconds: 3000),()
+    {
+      Navigator.of(context , rootNavigator: true).pop();
 
 
+    });
+    showDialog(context: context, builder: (BuildContext context)=> PrograssDialog(message: "Please wait...")).then((value)
+    {
+      timer!.cancel();
+      timer=null;
+
+    });
     var details = await AssistantMehtods.obtainPlaceDirectionDetails(pickUplatlng, dropOffLatlng);
 
     print("This is Encoded points::");
     print(details!.encodedpoints);
-
-    print("object______");
-    print(details.distanceText);
-
-
   }
 
   void initGeoFireListener() {
