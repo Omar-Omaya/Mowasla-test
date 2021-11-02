@@ -38,6 +38,8 @@ class _mainScreenState extends State<mainScreen> {
   late StreamSubscription _locationSubscription;
   double rotation = 0;
   Set<Marker> markerSet = Set<Marker>();
+  Set<Marker> markersSet = {};
+  Set<Circle> circlesSet = {};
   late Position currentPosition;
   var geoLocator = Geolocator();
   var nearByIcon = null;
@@ -88,6 +90,9 @@ class _mainScreenState extends State<mainScreen> {
             zoomGesturesEnabled: true,
             zoomControlsEnabled: true,
             polylines: polylineSet,
+            markers:markerSet ,
+            circles: circlesSet,
+
             onMapCreated: (GoogleMapController controller) {
               _controllerGoogleMap.complete(controller);
               newGoogleMapController = controller;
@@ -96,27 +101,18 @@ class _mainScreenState extends State<mainScreen> {
               });
               locatePosition();
             },
-            markers: markerSet,
+          //  markers: markerSet, 
           ),
           Positioned(
             left: 0.0,
             right: 0.0,
             bottom: 0.0,
             child: GestureDetector(
-              onTap: () async {
-                    
+              onTap: () async
+               {
                     var res = await Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchScreen()));
-
-                     getPlaceDirection();
-
-                    
-                  
-                    
-
-                    
-                    
-                    
-              },
+                     getPlaceDirection();  
+               },
               child: Container(
                 height: 300.0,
                 decoration: BoxDecoration(
@@ -300,24 +296,65 @@ class _mainScreenState extends State<mainScreen> {
     });
 
     LatLngBounds latLngBounds;
-    if(pickUplatlng.latitude>dropOffLatlng.latitude && pickUplatlng.longitude > dropOffLatlng.longitude)
+    if(pickUplatlng.latitude > dropOffLatlng.latitude && pickUplatlng.longitude > dropOffLatlng.longitude)
     {
       latLngBounds = LatLngBounds(southwest: dropOffLatlng,northeast: pickUplatlng);
     }
-    else if(pickUplatlng.longitude>dropOffLatlng.longitude)
+    else if(pickUplatlng.longitude > dropOffLatlng.longitude)  //PLA DLO DLA PLO
     {
       latLngBounds = LatLngBounds(southwest: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude),northeast: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude));
     }
-    else if(pickUplatlng.latitude>dropOffLatlng.latitude)
+    else if(pickUplatlng.latitude > dropOffLatlng.latitude)// 
     {
       latLngBounds = LatLngBounds(southwest: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude),northeast: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude));
     }
     else
     {
-      latLngBounds = LatLngBounds(southwest: dropOffLatlng,northeast: pickUplatlng);
+      latLngBounds = LatLngBounds(southwest: pickUplatlng,northeast: dropOffLatlng);
     }
 
     newGoogleMapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+
+    Marker pickUpLocMarker = Marker(
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+      infoWindow: InfoWindow(title: initialPos.placeName, snippet: "My Location"),
+      position: pickUplatlng,
+      markerId: MarkerId("pickUpId"),
+    );   
+    Marker dropOffLocMarker = Marker(
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      infoWindow: InfoWindow(title: finalPos.placeName, snippet: "DroppOff Location"),
+      position: dropOffLatlng,
+      markerId: MarkerId("dropOffId"),
+    );
+
+    setState(() {
+      markerSet.add(pickUpLocMarker);
+      markerSet.add(dropOffLocMarker);
+
+    });
+
+    Circle pickUpLocCircle = Circle(
+      fillColor: Colors.blueAccent,
+      center: pickUplatlng,
+      radius: 12,
+      strokeWidth: 4,
+      strokeColor: Colors.blueAccent,
+      circleId: CircleId("pickUpId"),
+    );
+    Circle dropOffLocCircle = Circle(
+      fillColor: Colors.deepPurple,
+      center: pickUplatlng,
+      radius: 12,
+      strokeWidth: 4,
+      strokeColor: Colors.deepPurple,
+      circleId: CircleId("dropOffId"),
+    );
+
+    setState(() {
+      circlesSet.add(pickUpLocCircle);
+      circlesSet.add(dropOffLocCircle);
+    });
 
   }
 
