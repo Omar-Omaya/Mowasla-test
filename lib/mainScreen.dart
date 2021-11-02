@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:location/location.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class mainScreen extends StatefulWidget {
@@ -239,6 +240,92 @@ class _mainScreenState extends State<mainScreen> {
               ),
             ),
           ),
+          Positioned(
+            bottom:0.0 ,
+            left: 0.0,
+            right: 0.0,
+            child: Container(
+              height: 300.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius:BorderRadius.only(topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0),),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 16.0,
+                    spreadRadius: 0.5,
+                    offset: Offset(0.7,0.7),
+                  )
+                ] 
+              ),
+              child: Padding(
+                padding:  EdgeInsets.symmetric(vertical: 17.0),
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      color: Colors.tealAccent[100],
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          children: [
+                            Icon(FontAwesomeIcons.carSide),
+                            SizedBox(width: 16.0,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Car", style: TextStyle(fontSize: 18.0),
+                                ),
+                                Text("10km", style: TextStyle(fontSize: 16.0, color: Colors.grey,),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20.0,),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        children: [
+                          Icon(FontAwesomeIcons.moneyCheckAlt,size: 18.0,color:Colors.black ,),
+                          SizedBox(width: 16.0,),
+                          Text("Cash"),
+                          SizedBox(width: 6.0,),
+                          Icon(Icons.keyboard_arrow_down,color:Colors.black54,size:16.0,),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 24.0,),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: RaisedButton(
+                        onPressed: ()
+                        {
+                          print("Clicked");
+                        },
+                        color: Theme.of(context).accentColor,
+                        child: Padding(
+                          padding: EdgeInsets.all(17.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Request", style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold,color: Colors.white),),
+                              Icon(FontAwesomeIcons.taxi,color: Colors.white,size:26.0),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+
+            
+          )
+       
         ],
       ),
     );
