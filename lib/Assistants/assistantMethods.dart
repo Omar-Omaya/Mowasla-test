@@ -71,4 +71,20 @@ class AssistantMehtods
 
 
   }
+
+  static int calculateFares(DirectionDetails directionDetails)
+  {
+    double timeTraveledFare = (directionDetails.durationValue/60)*0.20;
+    double distanceTraveledFare = (directionDetails.distanceValue/1000)*0.20;
+    double totalFareAmount= timeTraveledFare+ distanceTraveledFare;
+
+    //1$ = 15.71 egp
+
+    double totalLocalAmount = totalFareAmount*15.71;
+
+    return totalLocalAmount.truncate();
+
+
+
+  }
 }

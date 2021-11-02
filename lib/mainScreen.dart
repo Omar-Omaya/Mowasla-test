@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:mowasla_prototype/Assistants/assistantMethods.dart';
 import 'package:mowasla_prototype/Assistants/geoFireAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
+import 'package:mowasla_prototype/Models/directDetails.dart';
 import 'package:mowasla_prototype/Models/nearByAvailableDrivers.dart';
 import 'package:mowasla_prototype/StartupPage.dart';
 import 'package:mowasla_prototype/all_Widgets/Divider.dart';
@@ -58,6 +59,9 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
 
   double rideDetailsContainerHeight = 0 ;
   double searchContainerHeight =300.0;
+
+  DirectionDetails? tripDirectionDetails;
+  
 
   void displayRideDetailsContainer() async
   {
@@ -308,10 +312,14 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
                                 children: [
                                   Text("Car", style: TextStyle(fontSize: 18.0),
                                   ),
-                                  Text("10km", style: TextStyle(fontSize: 16.0, color: Colors.grey,),
+                                  Text(((tripDirectionDetails != null) ? '\$${tripDirectionDetails!.distanceText}':''), style: TextStyle(fontSize: 16.0, color: Colors.black,),
                                   ),
                                 ],
-                              )
+                              ),
+                              Expanded(child: Container()),
+                              Text(
+                                ((tripDirectionDetails != null) ? '\$${AssistantMehtods.calculateFares(tripDirectionDetails!)}': ''), style: TextStyle(fontSize: 16.0, color: Colors.black,),
+                                  ),
                             ],
                           ),
                         ),
@@ -387,6 +395,10 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
 
     });
     var details = await AssistantMehtods.obtainPlaceDirectionDetails(pickUplatlng, dropOffLatlng);
+
+    setState(() {
+      tripDirectionDetails = details!;
+    });
 
     print("This is Encoded points::");
     print(details!.encodedpoints);
