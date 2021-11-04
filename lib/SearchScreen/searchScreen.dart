@@ -201,6 +201,7 @@ class PredictionTile extends StatelessWidget {
       padding: EdgeInsets.all(0.0),
       onPressed: ()
       {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SuggestionsScreen()));
         getPlaceAddressDetails(placePredictions.place_id, context);
       },
       child: Container(
@@ -235,8 +236,6 @@ class PredictionTile extends StatelessWidget {
 
   void getPlaceAddressDetails(String placeId , context)
   async {
-
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SuggestionsScreen()));
 
   
     String placeDetailsUrl= 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=AIzaSyDpGaGpj9uoLbfhxGzXru_25FkoOjsl_mI';
