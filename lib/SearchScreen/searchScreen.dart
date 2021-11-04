@@ -4,7 +4,6 @@ import 'package:mowasla_prototype/DataHandler/appData.dart';
 import 'package:mowasla_prototype/Models/address.dart';
 import 'package:mowasla_prototype/Models/placePredictions.dart';
 import 'package:mowasla_prototype/all_Widgets/Divider.dart';
-import 'package:mowasla_prototype/mainScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -440,6 +439,7 @@ class VehicleCard extends StatelessWidget {
               ),
               onTap: () {
                 getPlaceAddressDetails(place_id, context);
+                Navigator.pop(context);
               },
             ),
           ),
@@ -470,7 +470,7 @@ class VehicleCard extends StatelessWidget {
       print("this is Drop off Location :: ");
       print(address.placeName);
 
-      Navigator.of(context).pushNamed(mainScreen.idScreen);
+      Navigator.pop(context, "obtainDirection");
     }
   }
 }
