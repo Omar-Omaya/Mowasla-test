@@ -312,13 +312,13 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
                                 children: [
                                   Text("Car", style: TextStyle(fontSize: 18.0),
                                   ),
-                                  Text(((tripDirectionDetails != null) ? '\$${tripDirectionDetails!.distanceText}':''), style: TextStyle(fontSize: 16.0, color: Colors.black,),
+                                  Text(((tripDirectionDetails != null) ? '${tripDirectionDetails!.distanceText}':''), style: TextStyle(fontSize: 16.0, color: Colors.black,),
                                   ),
                                 ],
                               ),
                               Expanded(child: Container()),
                               Text(
-                                ((tripDirectionDetails != null) ? '\$${AssistantMehtods.calculateFares(tripDirectionDetails!)}': ''), style: TextStyle(fontSize: 16.0, color: Colors.black,),
+                                ((tripDirectionDetails != null) ? '${AssistantMehtods.calculateFares(tripDirectionDetails!)}': ''), style: TextStyle(fontSize: 16.0, color: Colors.black,),
                                   ),
                             ],
                           ),
