@@ -53,7 +53,8 @@ class _mainScreenState extends State<mainScreen> {
 
     var location = _locationTracker.getLocation();
 
-    _locationSubscription = _locationTracker.onLocationChanged.listen((newLocalData) {
+    _locationSubscription =
+        _locationTracker.onLocationChanged.listen((newLocalData) {
       rotation = newLocalData.heading!;
     });
 
@@ -68,7 +69,6 @@ class _mainScreenState extends State<mainScreen> {
     print("this is your Address :: " + address);
 
     initGeoFireListener();
-
   }
 
   @override
@@ -254,7 +254,7 @@ class _mainScreenState extends State<mainScreen> {
                     longitude: map['longitude']);
             GeoFireAssistant.nearByAvailableDriversList
                 .add(nearbyAvailableDrivers);
-            if (nearbyAvailableDriverKeysLoaded==true){
+            if (nearbyAvailableDriverKeysLoaded == true) {
               updateAvailableDriversOnMap();
             }
             break;
