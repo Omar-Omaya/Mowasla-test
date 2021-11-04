@@ -4,6 +4,7 @@ import 'package:mowasla_prototype/DataHandler/appData.dart';
 import 'package:mowasla_prototype/Models/address.dart';
 import 'package:mowasla_prototype/Models/placePredictions.dart';
 import 'package:mowasla_prototype/all_Widgets/Divider.dart';
+import 'package:mowasla_prototype/vehicles/vehicles_card.dart';
 import 'package:provider/provider.dart';
 
 
@@ -200,9 +201,8 @@ class PredictionTile extends StatelessWidget {
       padding: EdgeInsets.all(0.0),
       onPressed: ()
       {
-        // getPlaceAddressDetails(placePredictions.place_id, context);
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => SuggestionsScreen()));
-
+        getPlaceAddressDetails(placePredictions.place_id, context);
       },
       child: Container(
         child: Column(
@@ -283,7 +283,16 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Image(
+          image: AssetImage('assets/images/mwasla_logo.png'),
+          height: 40.0,
+        ),
+      ),
+      body: ListView.builder(itemCount: 2, itemBuilder: (context, index) {
+        return VehicleCard(index: index);
+      }),
     );
   }
 }
