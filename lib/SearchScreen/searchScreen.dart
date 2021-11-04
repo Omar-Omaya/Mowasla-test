@@ -200,7 +200,8 @@ class PredictionTile extends StatelessWidget {
       padding: EdgeInsets.all(0.0),
       onPressed: ()
       {
-        getPlaceAddressDetails(placePredictions.place_id, context);
+        // getPlaceAddressDetails(placePredictions.place_id, context);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SuggestionsScreen()));
 
       },
       child: Container(
@@ -269,4 +270,20 @@ class PredictionTile extends StatelessWidget {
   }
   
   
+}
+
+class SuggestionsScreen extends StatefulWidget {
+  const SuggestionsScreen({Key? key}) : super(key: key);
+
+  @override
+  _SuggestionsScreenState createState() => _SuggestionsScreenState();
+}
+
+class _SuggestionsScreenState extends State<SuggestionsScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.green,
+    );
+  }
 }
