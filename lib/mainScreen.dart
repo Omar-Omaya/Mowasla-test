@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:mowasla_prototype/Assistants/assistantMethods.dart';
 import 'package:mowasla_prototype/Assistants/geoFireAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
+import 'package:mowasla_prototype/Models/Bus.dart';
+import 'package:mowasla_prototype/Models/busSearch.dart';
 import 'package:mowasla_prototype/Models/directDetails.dart';
 import 'package:mowasla_prototype/Models/nearByAvailableDrivers.dart';
 import 'package:mowasla_prototype/StartupPage.dart';
@@ -271,6 +273,19 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
                 ),
               ),
             ),
+            
+            
+          ),
+          Positioned(
+            child: GestureDetector(
+              onTap:  () async
+              {
+                await Navigator.push(context, MaterialPageRoute(builder: (context)=> busScreen()));
+                getBusPlaceDirection();
+
+              },
+              child: Icon(Icons.bus_alert),
+            )
           ),
           Positioned(
             bottom:0.0 ,
@@ -372,8 +387,7 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
     );
   }
 
-  Future<void> getPlaceDirection() async 
-  {
+  Future<void> getPlaceDirection() async {
     var initialPos = Provider.of<AppData>(context, listen:  false).pickupLocation;
     var finalPos = Provider.of<AppData>(context, listen: false).dropOfAddress;
     // print(res);
@@ -395,6 +409,7 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
 
     });
     var details = await AssistantMehtods.obtainPlaceDirectionDetails(pickUplatlng, dropOffLatlng);
+    //var details = await Bus.obtainPlaceDirectionDetails();
 
     setState(() {
       tripDirectionDetails = details!;
@@ -489,6 +504,126 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
     });
 
   }
+
+  Future<void> getBusPlaceDirection() async {
+
+    var pickUplatlng = LatLng(31.282688, 30.010827);
+    var dropOffLatlng = LatLng(31.210247, 29.908724);
+    // new Timer(, callback)
+
+    Timer? timer = Timer(Duration(milliseconds: 3000),()
+    {
+      Navigator.of(context , rootNavigator: true).pop();
+
+
+    });
+    showDialog(context: context, builder: (BuildContext context)=> PrograssDialog(message: "Please wait...")).then((value)
+    {
+      timer!.cancel();
+      timer=null;
+
+    });
+
+    
+    var details = await Bus.obtainPlaceDirectionDetails();
+
+    setState(() {
+      tripDirectionDetails = details!;
+    });
+
+    print("This is Encoded points::");
+    print(details!.encodedpoints);
+
+    PolylinePoints polylinePoints = PolylinePoints();
+    List<PointLatLng> decodePolyLinePointsResult = polylinePoints.decodePolyline(details.encodedpoints);
+    if(decodePolyLinePointsResult.isNotEmpty)
+    {
+      decodePolyLinePointsResult.forEach((PointLatLng pointLatLng) {
+        pLineCoerordinates.add(LatLng(pointLatLng.latitude,pointLatLng.longitude));
+
+       });
+    }
+    polylineSet.clear();
+    setState(() {
+         Polyline polyline = Polyline(
+         color: Colors.black,
+         polylineId: PolylineId("PolylineID"),
+         jointType: JointType.round,
+         points: pLineCoerordinates,
+         width: 5,
+         endCap : Cap.roundCap,
+         geodesic: true
+
+       );
+       polylineSet.add(polyline);
+    });
+
+    LatLngBounds latLngBounds;
+    if(pickUplatlng.latitude > dropOffLatlng.latitude && pickUplatlng.longitude > dropOffLatlng.longitude)
+    {
+      latLngBounds = LatLngBounds(southwest: dropOffLatlng,northeast: pickUplatlng);
+    }
+    else if(pickUplatlng.longitude > dropOffLatlng.longitude)  //PLA DLO DLA PLO
+    {
+      latLngBounds = LatLngBounds(southwest: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude),northeast: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude));
+    }
+    else if(pickUplatlng.latitude > dropOffLatlng.latitude)// 
+    {
+      latLngBounds = LatLngBounds(southwest: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude),northeast: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude));
+    }
+    else
+    {
+      latLngBounds = LatLngBounds(southwest: pickUplatlng,northeast: dropOffLatlng);
+    }
+
+    newGoogleMapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+
+    Marker pickUpLocMarker = Marker(
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+      infoWindow: InfoWindow(title: "Start Location", snippet: "My Location"),
+      position: pickUplatlng,
+      markerId: MarkerId("pickUpId"),
+    );   
+    Marker dropOffLocMarker = Marker(
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      infoWindow: InfoWindow(title: "DropOff Location", snippet: "DroppOff Location"),
+      position: dropOffLatlng,
+      markerId: MarkerId("dropOffId"),
+    );
+
+    setState(() {
+      markerSet.add(pickUpLocMarker);
+      markerSet.add(dropOffLocMarker);
+
+    });
+
+    Circle pickUpLocCircle = Circle(
+      fillColor: Colors.blueAccent,
+      center: pickUplatlng,
+      radius: 12,
+      strokeWidth: 4,
+      strokeColor: Colors.blueAccent,
+      circleId: CircleId("pickUpId"),
+    );
+    Circle dropOffLocCircle = Circle(
+      fillColor: Colors.deepPurple,
+      center: pickUplatlng,
+      radius: 12,
+      strokeWidth: 4,
+      strokeColor: Colors.deepPurple,
+      circleId: CircleId("dropOffId"),
+    );
+
+    setState(() {
+      circlesSet.add(pickUpLocCircle);
+      circlesSet.add(dropOffLocCircle);
+    });
+
+    
+
+  }
+
+  
 
   void initGeoFireListener() {
     Geofire.initialize('availableDrivers');

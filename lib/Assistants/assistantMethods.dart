@@ -49,12 +49,7 @@ class AssistantMehtods
     String directionUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=${initalPosition.latitude},${initalPosition.longitude}&destination=${finalPostion.latitude},${finalPostion.longitude}&key=AIzaSyDpGaGpj9uoLbfhxGzXru_25FkoOjsl_mI";
 
     var res = await RequestAssistant.getRequest(directionUrl);
-    print("------------------");
-
-
     DirectionDetails directionDetails = DirectionDetails();
-
-
 
     directionDetails.encodedpoints = res["routes"][0]["overview_polyline"]["points"];
 

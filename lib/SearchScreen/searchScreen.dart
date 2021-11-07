@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:mowasla_prototype/Assistants/RequestAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
 import 'package:mowasla_prototype/Models/address.dart';
@@ -194,8 +195,9 @@ class PredictionTile extends StatelessWidget {
     return FlatButton(
       padding: EdgeInsets.all(0.0),
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => SuggestionsScreen(place_id: placePredictions.place_id,)));
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => SuggestionsScreen(place_id: placePredictions.place_id,)));
+        getPlaceAddressDetails(placePredictions.place_id, context);
       },
       child: Container(
         child: Column(
@@ -222,7 +224,7 @@ class PredictionTile extends StatelessWidget {
                         height: 3.0,
                       ),
                       Text(
-                        "${placePredictions.secondart_text}",
+                        "${placePredictions.secondary_text}",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 12.0, color: Colors.grey),
                       )
@@ -238,6 +240,31 @@ class PredictionTile extends StatelessWidget {
         ),
       ),
     );
+  }
+  void getPlaceAddressDetails(String placeId, context) async {
+    String placeDetailsUrl =
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=AIzaSyDpGaGpj9uoLbfhxGzXru_25FkoOjsl_mI';
+
+    var res = await RequestAssistant.getRequest(placeDetailsUrl);
+
+    if (res == "failed") {
+      return;
+    }
+
+    if (res["status"] == "OK") {
+      Address address = Address();
+      address.placeName = res["result"]["name"];
+      address.placeId = placeId;
+      address.latitude = res["result"]["geometry"]["location"]["lat"];
+      address.longitude = res["result"]["geometry"]["location"]["lng"];
+
+      Provider.of<AppData>(context, listen: false)
+          .updateDropOffocationAddress(address);
+      print("this is Drop off Location :: ");
+      print(address.placeName);
+
+      Navigator.pop(context, "obtainDirection");
+    }
   }
 }
 
