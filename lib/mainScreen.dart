@@ -59,6 +59,8 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
   List<LatLng> pLineCoerordinates = [];
   Set<Polyline> polylineSet = {};
 
+
+
   double rideDetailsContainerHeight = 0 ;
   double searchContainerHeight =300.0;
 
@@ -420,6 +422,7 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
 
     PolylinePoints polylinePoints = PolylinePoints();
     List<PointLatLng> decodePolyLinePointsResult = polylinePoints.decodePolyline(details.encodedpoints);
+    // List<PointLatLng> decodePolyLinePointsResult = polylinePoints;
     if(decodePolyLinePointsResult.isNotEmpty)
     {
       decodePolyLinePointsResult.forEach((PointLatLng pointLatLng) {
@@ -439,8 +442,10 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
          geodesic: true
 
        );
-       polylineSet.add(polyline);
+      //  polylineSet.add(polyline);
+      
     });
+    
 
     LatLngBounds latLngBounds;
     if(pickUplatlng.latitude > dropOffLatlng.latitude && pickUplatlng.longitude > dropOffLatlng.longitude)
@@ -536,13 +541,17 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
 
     PolylinePoints polylinePoints = PolylinePoints();
     List<PointLatLng> decodePolyLinePointsResult = polylinePoints.decodePolyline(details.encodedpoints);
-    if(decodePolyLinePointsResult.isNotEmpty)
-    {
-      decodePolyLinePointsResult.forEach((PointLatLng pointLatLng) {
-        pLineCoerordinates.add(LatLng(pointLatLng.latitude,pointLatLng.longitude));
+    // if(decodePolyLinePointsResult.isNotEmpty)
+    // {
+    //   decodePolyLinePointsResult.forEach((PointLatLng pointLatLng) {
+    //     pLineCoerordinates.add(LatLng(pointLatLng.latitude,pointLatLng.longitude));
 
-       });
-    }
+    //    });
+
+    // }
+    pLineCoerordinates.add(LatLng(31.242003, 29.963379));
+    pLineCoerordinates.add(LatLng(31.242919, 29.965066));
+
     polylineSet.clear();
     setState(() {
          Polyline polyline = Polyline(
@@ -556,7 +565,11 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
 
        );
        polylineSet.add(polyline);
+      //  polylineSet.add(LatLng(31.242003, 29.963379))
+       
     });
+
+
 
     LatLngBounds latLngBounds;
     if(pickUplatlng.latitude > dropOffLatlng.latitude && pickUplatlng.longitude > dropOffLatlng.longitude)
@@ -581,12 +594,14 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
     Marker pickUpLocMarker = Marker(
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
       infoWindow: InfoWindow(title: "Start Location", snippet: "My Location"),
+      // position: LatLng(31.239141,29.958956),
       position: pickUplatlng,
       markerId: MarkerId("pickUpId"),
     );   
     Marker dropOffLocMarker = Marker(
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
       infoWindow: InfoWindow(title: "DropOff Location", snippet: "DroppOff Location"),
+      // position: LatLng(31.242003,29.963379),
       position: dropOffLatlng,
       markerId: MarkerId("dropOffId"),
     );
@@ -594,6 +609,8 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
     setState(() {
       markerSet.add(pickUpLocMarker);
       markerSet.add(dropOffLocMarker);
+
+      // markerSet.add();
 
     });
 
