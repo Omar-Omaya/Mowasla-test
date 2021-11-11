@@ -23,7 +23,6 @@ import 'package:location/location.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-
 class mainScreen extends StatefulWidget {
   static const String idScreen = "MainScreen";
   static final CameraPosition _kGooglePlex =
@@ -59,25 +58,21 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
   List<LatLng> pLineCoerordinates = [];
   Set<Polyline> polylineSet = {};
 
-  double rideDetailsContainerHeight = 0 ;
-  double searchContainerHeight =300.0;
+  double rideDetailsContainerHeight = 0;
+
+  double searchContainerHeight = 300.0;
 
   DirectionDetails? tripDirectionDetails;
-  
 
-  void displayRideDetailsContainer() async
-  {
+  void displayRideDetailsContainer() async {
     await getPlaceDirection();
 
     setState(() {
-      searchContainerHeight=0;
-      rideDetailsContainerHeight= 240;
-      bottomPaddingOfMap=230;
-      
+      searchContainerHeight = 0;
+      rideDetailsContainerHeight = 240;
+      bottomPaddingOfMap = 230;
     });
-
   }
-
 
   void locatePosition() async {
     Position position = await Geolocator.getCurrentPosition();
@@ -120,7 +115,7 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
             zoomGesturesEnabled: true,
             zoomControlsEnabled: true,
             polylines: polylineSet,
-            markers:markerSet ,
+            markers: markerSet,
             circles: circlesSet,
 
             onMapCreated: (GoogleMapController controller) {
@@ -131,18 +126,18 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
               });
               locatePosition();
             },
-          //  markers: markerSet, 
+            //  markers: markerSet,
           ),
           Positioned(
             left: 0.0,
             right: 0.0,
             bottom: 0.0,
             child: GestureDetector(
-              onTap: () async
-               {
-                    var res = await Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchScreen()));
-                     displayRideDetailsContainer(); 
-               },
+              onTap: () async {
+                var res = await Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SearchScreen()));
+                displayRideDetailsContainer();
+              },
               child: AnimatedSize(
                 vsync: this,
                 curve: Curves.bounceIn,
@@ -220,7 +215,8 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(Provider.of<AppData>(context).pickupLocation !=
+                              Text(Provider.of<AppData>(context)
+                                          .pickupLocation !=
                                       null
                                   ? Provider.of<AppData>(context)
                                       .pickupLocation!
@@ -273,44 +269,42 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            
-            
           ),
           Positioned(
-            child: GestureDetector(
-              onTap:  () async
-              {
-                await Navigator.push(context, MaterialPageRoute(builder: (context)=> busScreen()));
-                getBusPlaceDirection();
-
-              },
-              child: Icon(Icons.bus_alert),
-            )
-          ),
+              child: GestureDetector(
+            onTap: () async {
+              await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => busScreen()));
+              getBusPlaceDirection();
+            },
+            child: Icon(Icons.bus_alert),
+          )),
           Positioned(
-            bottom:0.0 ,
+            bottom: 0.0,
             left: 0.0,
             right: 0.0,
             child: AnimatedSize(
-            vsync: this,
-            curve: Curves.bounceIn,
-            duration: new Duration(microseconds: 160),
-            child: Container(
+              vsync: this,
+              curve: Curves.bounceIn,
+              duration: new Duration(microseconds: 160),
+              child: Container(
                 height: rideDetailsContainerHeight,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius:BorderRadius.only(topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0),),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black,
-                      blurRadius: 16.0,
-                      spreadRadius: 0.5,
-                      offset: Offset(0.7,0.7),
-                    )
-                  ] 
-                ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16.0),
+                      topRight: Radius.circular(16.0),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black,
+                        blurRadius: 16.0,
+                        spreadRadius: 0.5,
+                        offset: Offset(0.7, 0.7),
+                      )
+                    ]),
                 child: Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 17.0),
+                  padding: EdgeInsets.symmetric(vertical: 17.0),
                   child: Column(
                     children: [
                       Container(
@@ -321,43 +315,75 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
                           child: Row(
                             children: [
                               Icon(FontAwesomeIcons.carSide),
-                              SizedBox(width: 16.0,),
+                              SizedBox(
+                                width: 16.0,
+                              ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Car", style: TextStyle(fontSize: 18.0),
+                                  Text(
+                                    "Car",
+                                    style: TextStyle(fontSize: 18.0),
                                   ),
-                                  Text(((tripDirectionDetails != null) ? '${tripDirectionDetails!.distanceText}':''), style: TextStyle(fontSize: 16.0, color: Colors.black,),
+                                  Text(
+                                    ((tripDirectionDetails != null)
+                                        ? '${tripDirectionDetails!.distanceText}'
+                                        : ''),
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ],
                               ),
                               Expanded(child: Container()),
                               Text(
-                                ((tripDirectionDetails != null) ? '${AssistantMehtods.calculateFares(tripDirectionDetails!)}': ''), style: TextStyle(fontSize: 16.0, color: Colors.black,),
-                                  ),
+                                ((tripDirectionDetails != null)
+                                    ? '${AssistantMehtods.calculateFares(tripDirectionDetails!)}'
+                                    : ''),
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.black,
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(height: 20.0,),
+                      SizedBox(
+                        height: 20.0,
+                      ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
                         child: Row(
                           children: [
-                            Icon(FontAwesomeIcons.moneyCheckAlt,size: 18.0,color:Colors.black ,),
-                            SizedBox(width: 16.0,),
+                            Icon(
+                              FontAwesomeIcons.moneyCheckAlt,
+                              size: 18.0,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 16.0,
+                            ),
                             Text("Cash"),
-                            SizedBox(width: 6.0,),
-                            Icon(Icons.keyboard_arrow_down,color:Colors.black54,size:16.0,),
+                            SizedBox(
+                              width: 6.0,
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.black54,
+                              size: 16.0,
+                            ),
                           ],
                         ),
                       ),
-                      SizedBox(height: 24.0,),
+                      SizedBox(
+                        height: 24.0,
+                      ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
                         child: RaisedButton(
-                          onPressed: ()
-                          {
+                          onPressed: () {
                             print("Clicked");
                           },
                           color: Theme.of(context).accentColor,
@@ -366,8 +392,15 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Request", style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold,color: Colors.white),),
-                                Icon(FontAwesomeIcons.taxi,color: Colors.white,size:26.0),
+                                Text(
+                                  "Request",
+                                  style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                Icon(FontAwesomeIcons.taxi,
+                                    color: Colors.white, size: 26.0),
                               ],
                             ),
                           ),
@@ -378,37 +411,34 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
                 ),
               ),
             ),
-
-            
           )
-       
         ],
       ),
     );
   }
 
   Future<void> getPlaceDirection() async {
-    var initialPos = Provider.of<AppData>(context, listen:  false).pickupLocation;
+    var initialPos =
+        Provider.of<AppData>(context, listen: false).pickupLocation;
     var finalPos = Provider.of<AppData>(context, listen: false).dropOfAddress;
     // print(res);
 
-    var pickUplatlng = LatLng(initialPos!.latitude,initialPos.longitude);
-    var dropOffLatlng = LatLng(finalPos!.latitude,finalPos.longitude);
+    var pickUplatlng = LatLng(initialPos!.latitude, initialPos.longitude);
+    var dropOffLatlng = LatLng(finalPos!.latitude, finalPos.longitude);
     // new Timer(, callback)
 
-    Timer? timer = Timer(Duration(milliseconds: 3000),()
-    {
-      Navigator.of(context , rootNavigator: true).pop();
-
-
+    Timer? timer = Timer(Duration(milliseconds: 3000), () {
+      Navigator.of(context, rootNavigator: true).pop();
     });
-    showDialog(context: context, builder: (BuildContext context)=> PrograssDialog(message: "Please wait...")).then((value)
-    {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            PrograssDialog(message: "Please wait...")).then((value) {
       timer!.cancel();
-      timer=null;
-
+      timer = null;
     });
-    var details = await AssistantMehtods.obtainPlaceDirectionDetails(pickUplatlng, dropOffLatlng);
+    var details = await AssistantMehtods.obtainPlaceDirectionDetails(
+        pickUplatlng, dropOffLatlng);
     //var details = await Bus.obtainPlaceDirectionDetails();
 
     setState(() {
@@ -419,58 +449,62 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
     print(details!.encodedpoints);
 
     PolylinePoints polylinePoints = PolylinePoints();
-    List<PointLatLng> decodePolyLinePointsResult = polylinePoints.decodePolyline(details.encodedpoints);
-    if(decodePolyLinePointsResult.isNotEmpty)
-    {
+    List<PointLatLng> decodePolyLinePointsResult =
+        polylinePoints.decodePolyline(details.encodedpoints);
+    if (decodePolyLinePointsResult.isNotEmpty) {
       decodePolyLinePointsResult.forEach((PointLatLng pointLatLng) {
-        pLineCoerordinates.add(LatLng(pointLatLng.latitude,pointLatLng.longitude));
-
-       });
+        pLineCoerordinates
+            .add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
+      });
     }
     polylineSet.clear();
     setState(() {
-         Polyline polyline = Polyline(
-         color: Colors.black,
-         polylineId: PolylineId("PolylineID"),
-         jointType: JointType.round,
-         points: pLineCoerordinates,
-         width: 5,
-         endCap : Cap.roundCap,
-         geodesic: true
-
-       );
-       polylineSet.add(polyline);
+      Polyline polyline = Polyline(
+          color: Colors.black,
+          polylineId: PolylineId("PolylineID"),
+          jointType: JointType.round,
+          points: pLineCoerordinates,
+          width: 5,
+          endCap: Cap.roundCap,
+          geodesic: true);
+      polylineSet.add(polyline);
     });
 
     LatLngBounds latLngBounds;
-    if(pickUplatlng.latitude > dropOffLatlng.latitude && pickUplatlng.longitude > dropOffLatlng.longitude)
+    if (pickUplatlng.latitude > dropOffLatlng.latitude &&
+        pickUplatlng.longitude > dropOffLatlng.longitude) {
+      latLngBounds =
+          LatLngBounds(southwest: dropOffLatlng, northeast: pickUplatlng);
+    } else if (pickUplatlng.longitude >
+        dropOffLatlng.longitude) //PLA DLO DLA PLO
     {
-      latLngBounds = LatLngBounds(southwest: dropOffLatlng,northeast: pickUplatlng);
-    }
-    else if(pickUplatlng.longitude > dropOffLatlng.longitude)  //PLA DLO DLA PLO
+      latLngBounds = LatLngBounds(
+          southwest: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude),
+          northeast: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude));
+    } else if (pickUplatlng.latitude > dropOffLatlng.latitude) //
     {
-      latLngBounds = LatLngBounds(southwest: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude),northeast: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude));
-    }
-    else if(pickUplatlng.latitude > dropOffLatlng.latitude)// 
-    {
-      latLngBounds = LatLngBounds(southwest: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude),northeast: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude));
-    }
-    else
-    {
-      latLngBounds = LatLngBounds(southwest: pickUplatlng,northeast: dropOffLatlng);
+      latLngBounds = LatLngBounds(
+          southwest: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude),
+          northeast: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude));
+    } else {
+      latLngBounds =
+          LatLngBounds(southwest: pickUplatlng, northeast: dropOffLatlng);
     }
 
-    newGoogleMapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+    newGoogleMapController
+        .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
 
     Marker pickUpLocMarker = Marker(
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-      infoWindow: InfoWindow(title: initialPos.placeName, snippet: "My Location"),
+      infoWindow:
+          InfoWindow(title: initialPos.placeName, snippet: "My Location"),
       position: pickUplatlng,
       markerId: MarkerId("pickUpId"),
-    );   
+    );
     Marker dropOffLocMarker = Marker(
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      infoWindow: InfoWindow(title: finalPos.placeName, snippet: "DroppOff Location"),
+      infoWindow:
+          InfoWindow(title: finalPos.placeName, snippet: "DroppOff Location"),
       position: dropOffLatlng,
       markerId: MarkerId("dropOffId"),
     );
@@ -478,7 +512,6 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
     setState(() {
       markerSet.add(pickUpLocMarker);
       markerSet.add(dropOffLocMarker);
-
     });
 
     Circle pickUpLocCircle = Circle(
@@ -502,29 +535,24 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
       circlesSet.add(pickUpLocCircle);
       circlesSet.add(dropOffLocCircle);
     });
-
   }
 
   Future<void> getBusPlaceDirection() async {
-
     var pickUplatlng = LatLng(31.282688, 30.010827);
     var dropOffLatlng = LatLng(31.210247, 29.908724);
     // new Timer(, callback)
 
-    Timer? timer = Timer(Duration(milliseconds: 3000),()
-    {
-      Navigator.of(context , rootNavigator: true).pop();
-
-
+    Timer? timer = Timer(Duration(milliseconds: 3000), () {
+      Navigator.of(context, rootNavigator: true).pop();
     });
-    showDialog(context: context, builder: (BuildContext context)=> PrograssDialog(message: "Please wait...")).then((value)
-    {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            PrograssDialog(message: "Please wait...")).then((value) {
       timer!.cancel();
-      timer=null;
-
+      timer = null;
     });
 
-    
     var details = await Bus.obtainPlaceDirectionDetails();
 
     setState(() {
@@ -535,58 +563,61 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
     print(details!.encodedpoints);
 
     PolylinePoints polylinePoints = PolylinePoints();
-    List<PointLatLng> decodePolyLinePointsResult = polylinePoints.decodePolyline(details.encodedpoints);
-    if(decodePolyLinePointsResult.isNotEmpty)
-    {
+    List<PointLatLng> decodePolyLinePointsResult =
+        polylinePoints.decodePolyline(details.encodedpoints);
+    if (decodePolyLinePointsResult.isNotEmpty) {
       decodePolyLinePointsResult.forEach((PointLatLng pointLatLng) {
-        pLineCoerordinates.add(LatLng(pointLatLng.latitude,pointLatLng.longitude));
-
-       });
+        pLineCoerordinates
+            .add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
+      });
     }
     polylineSet.clear();
     setState(() {
-         Polyline polyline = Polyline(
-         color: Colors.black,
-         polylineId: PolylineId("PolylineID"),
-         jointType: JointType.round,
-         points: pLineCoerordinates,
-         width: 5,
-         endCap : Cap.roundCap,
-         geodesic: true
-
-       );
-       polylineSet.add(polyline);
+      Polyline polyline = Polyline(
+          color: Colors.black,
+          polylineId: PolylineId("PolylineID"),
+          jointType: JointType.round,
+          points: pLineCoerordinates,
+          width: 5,
+          endCap: Cap.roundCap,
+          geodesic: true);
+      polylineSet.add(polyline);
     });
 
     LatLngBounds latLngBounds;
-    if(pickUplatlng.latitude > dropOffLatlng.latitude && pickUplatlng.longitude > dropOffLatlng.longitude)
+    if (pickUplatlng.latitude > dropOffLatlng.latitude &&
+        pickUplatlng.longitude > dropOffLatlng.longitude) {
+      latLngBounds =
+          LatLngBounds(southwest: dropOffLatlng, northeast: pickUplatlng);
+    } else if (pickUplatlng.longitude >
+        dropOffLatlng.longitude) //PLA DLO DLA PLO
     {
-      latLngBounds = LatLngBounds(southwest: dropOffLatlng,northeast: pickUplatlng);
-    }
-    else if(pickUplatlng.longitude > dropOffLatlng.longitude)  //PLA DLO DLA PLO
+      latLngBounds = LatLngBounds(
+          southwest: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude),
+          northeast: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude));
+    } else if (pickUplatlng.latitude > dropOffLatlng.latitude) //
     {
-      latLngBounds = LatLngBounds(southwest: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude),northeast: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude));
-    }
-    else if(pickUplatlng.latitude > dropOffLatlng.latitude)// 
-    {
-      latLngBounds = LatLngBounds(southwest: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude),northeast: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude));
-    }
-    else
-    {
-      latLngBounds = LatLngBounds(southwest: pickUplatlng,northeast: dropOffLatlng);
+      latLngBounds = LatLngBounds(
+          southwest: LatLng(dropOffLatlng.latitude, pickUplatlng.longitude),
+          northeast: LatLng(pickUplatlng.latitude, dropOffLatlng.longitude));
+    } else {
+      latLngBounds =
+          LatLngBounds(southwest: pickUplatlng, northeast: dropOffLatlng);
     }
 
-    newGoogleMapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+    newGoogleMapController
+        .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
 
     Marker pickUpLocMarker = Marker(
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
       infoWindow: InfoWindow(title: "Start Location", snippet: "My Location"),
       position: pickUplatlng,
       markerId: MarkerId("pickUpId"),
-    );   
+    );
     Marker dropOffLocMarker = Marker(
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      infoWindow: InfoWindow(title: "DropOff Location", snippet: "DroppOff Location"),
+      infoWindow:
+          InfoWindow(title: "DropOff Location", snippet: "DroppOff Location"),
       position: dropOffLatlng,
       markerId: MarkerId("dropOffId"),
     );
@@ -594,7 +625,6 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
     setState(() {
       markerSet.add(pickUpLocMarker);
       markerSet.add(dropOffLocMarker);
-
     });
 
     Circle pickUpLocCircle = Circle(
@@ -618,12 +648,7 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
       circlesSet.add(pickUpLocCircle);
       circlesSet.add(dropOffLocCircle);
     });
-
-    
-
   }
-
-  
 
   void initGeoFireListener() {
     Geofire.initialize('availableDrivers');
