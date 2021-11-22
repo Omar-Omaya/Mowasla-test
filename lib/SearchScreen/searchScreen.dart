@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class SearchScreen extends StatefulWidget {
+  static String idScreen = "searchScreen";
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }

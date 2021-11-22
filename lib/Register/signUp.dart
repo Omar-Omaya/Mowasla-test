@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mowasla_prototype/New_Screen/homeScreen.dart';
 import 'package:mowasla_prototype/Register/signIn.dart';
 import 'package:mowasla_prototype/main.dart';
 import 'package:mowasla_prototype/mainScreen.dart';
+import 'package:mowasla_prototype/New_Screen/bottomNav.dart';
 
 
 class signUp extends StatelessWidget {
@@ -177,7 +179,7 @@ void registerNewUser(BuildContext context) async
     usersRef.child(firebaseUser.uid).set(userDataMap);
     displayToastMessage("Congrats, your account has been created.", context);
 
-    Navigator.pushNamedAndRemoveUntil(context, mainScreen.idScreen, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(context, Homeroute.idScreen, (route) => false);
 
 
   }

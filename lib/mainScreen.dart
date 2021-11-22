@@ -24,7 +24,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class mainScreen extends StatefulWidget {
-  static const String idScreen = "MainScreen";
+  static const String idScreen = "Test";
   static final CameraPosition _kGooglePlex =
       CameraPosition(target: LatLng(31.2264784, 29.9379636), zoom: 14.4746);
 
@@ -57,6 +57,7 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
 
   List<LatLng> pLineCoerordinates = [];
   Set<Polyline> polylineSet = {};
+  
 
 
 
@@ -135,7 +136,7 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
             bottom: 0.0,
             child: GestureDetector(
               onTap: () async {
-                var res = await Navigator.push(context,
+                 var res = await Navigator.push(context,
                     MaterialPageRoute(builder: (context) => SearchScreen()));
                 displayRideDetailsContainer();
               },
@@ -386,6 +387,9 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
                         child: RaisedButton(
                           onPressed: () {
                             print("Clicked");
+                            pLineCoerordinates.clear();
+                            polylineSet.clear();
+                            markersSet.clear();
                           },
                           color: Theme.of(context).accentColor,
                           child: Padding(
@@ -417,6 +421,10 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
       ),
     );
   }
+  //----------------------------------------------------------------------
+  //----------------------------------------------------------------------
+  //----------------------------------------------------------------------
+  //----------------------------------------------------------------------
 
   Future<void> getPlaceDirection() async {
     var initialPos =
@@ -471,7 +479,7 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
          geodesic: true
 
        );
-      //  polylineSet.add(polyline);
+       polylineSet.add(polyline);
       
     });
     
@@ -543,6 +551,10 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
     });
   }
 
+  //-------------------------------------------------------------
+  //-------------------------------------------------------------
+  //-------------------------------------------------------------
+
   Future<void> getBusPlaceDirection() async {
     var pickUplatlng = LatLng(31.282688, 30.010827);
     var dropOffLatlng = LatLng(31.210247, 29.908724);
@@ -578,8 +590,13 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
     //    });
 
     // }
-    pLineCoerordinates.add(LatLng(31.242003, 29.963379));
-    pLineCoerordinates.add(LatLng(31.242919, 29.965066));
+    pLineCoerordinates.add(LatLng(31.248784,29.97956));
+    pLineCoerordinates.add(LatLng(31.251905,29.978776));
+    pLineCoerordinates.add(LatLng(31.252513,29.976544));
+    pLineCoerordinates.add(LatLng(31.251641,29.974224));
+    pLineCoerordinates.add(LatLng(31.249573,29.971596));
+    pLineCoerordinates.add(LatLng(31.24737,29.968919));
+
 
     polylineSet.clear();
     setState(() {
