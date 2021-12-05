@@ -13,6 +13,7 @@ import 'package:mowasla_prototype/Register/sign_in.dart';
 import 'package:mowasla_prototype/Register/sign_up.dart';
 import 'package:mowasla_prototype/main_screen.dart';
 import 'package:provider/provider.dart';
+
 // void main() async
 // {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -21,20 +22,13 @@ import 'package:provider/provider.dart';
 // }
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
-  runApp(
-    MaterialApp(
-      home: MyApps(),
-      
-    )
-  );
 
-
+  runApp(MaterialApp(
+    home: MyApps(),
+  ));
 }
-
 
 // class MyApp extends StatelessWidget {
 //   const MyApp({Key? key}) : super(key: key);
@@ -52,37 +46,31 @@ void main() async {
 //   }
 // }
 
-
-DatabaseReference usersRef = FirebaseDatabase.instance.reference().child("users");
+DatabaseReference usersRef =
+    FirebaseDatabase.instance.reference().child("users");
 
 class MyApps extends StatelessWidget {
-  const MyApps({ Key? key }) : super(key: key);
+  const MyApps({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => AppData(),
       child: MaterialApp(
-    
         initialRoute: Homeroute.idScreen,
-        routes: 
-        {
-          signUp.idScreen : (context) => signUp(),
-          mainScreen.idScreen : (context) => mainScreen(),
-          signIn.idScreen : (context) => signIn(),
-          Homeroute.idScreen : (context) => Homeroute(),
-          Train.idScreen : (context) => Train(),
-          Taxi.idScreen : (context) => Taxi(),
-          rail_train.idScreen : (context) => rail_train(),
-          Bus.idScreen : (context) => Bus(),
-          SearchScreen.idScreen : (context) => SearchScreen(),
-
-          
+        routes: {
+          signUp.idScreen: (context) => signUp(),
+          mainScreen.idScreen: (context) => mainScreen(),
+          signIn.idScreen: (context) => signIn(),
+          Homeroute.idScreen: (context) => Homeroute(),
+          Train.idScreen: (context) => Train(),
+          Taxi.idScreen: (context) => Taxi(),
+          rail_train.idScreen: (context) => rail_train(),
+          Bus.idScreen: (context) => Bus(),
+          SearchScreen.idScreen: (context) => SearchScreen(),
         },
         debugShowCheckedModeBanner: false,
-        
       ),
     );
   }
 }
-
