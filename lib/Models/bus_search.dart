@@ -5,10 +5,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mowasla_prototype/Assistants/RequestAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
-import 'package:mowasla_prototype/Models/Bus.dart';
+import 'package:mowasla_prototype/Models/bus.dart';
 import 'package:mowasla_prototype/Models/address.dart';
-import 'package:mowasla_prototype/Models/directDetails.dart';
 import 'package:provider/provider.dart';
+// import 'package:mowasla_prototype/Models/direct_details.dart'';
 
 
 
@@ -33,8 +33,9 @@ class _busScreenState extends State<busScreen> {
           onPressed:()
           {
             
-             Navigator.pop(context, true);
-             var details = Bus.obtainPlaceDirectionDetails();
+            //  Navigator.pop(context, true);
+            //  var details = Bus.obtainPlaceDirectionDetails();
+            // getBusPlaceAddressDetails();
              
 
           },
@@ -45,6 +46,8 @@ class _busScreenState extends State<busScreen> {
       
     );
   }
+
+
   // String directionStaticBus = "https://maps.googleapis.com/maps/api/directions/json?origin=31.282688,30.010827&destination=31.210247,29.908724&key=AIzaSyDpGaGpj9uoLbfhxGzXru_25FkoOjsl_mI";
 
 

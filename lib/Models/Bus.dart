@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mowasla_prototype/Assistants/RequestAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
 import 'package:mowasla_prototype/Models/address.dart';
-import 'package:mowasla_prototype/Models/directDetails.dart';
+import 'package:mowasla_prototype/Models/direct_details.dart';
 import 'package:provider/provider.dart';
 
 

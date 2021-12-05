@@ -9,17 +9,17 @@ import 'package:mowasla_prototype/Assistants/assistantMethods.dart';
 import 'package:mowasla_prototype/Assistants/geoFireAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
 import 'package:mowasla_prototype/Assistants/Singleton.dart';
-import 'package:mowasla_prototype/Models/directDetails.dart';
+import 'package:mowasla_prototype/Models/direct_details.dart';
 import 'package:mowasla_prototype/Models/nearByAvailableDrivers.dart';
 import 'package:mowasla_prototype/New_Screen/transportationDesicion.dart';
-import 'package:mowasla_prototype/SearchScreen/searchScreen.dart';
+import 'package:mowasla_prototype/SearchScreen/search_screen.dart';
 import 'package:mowasla_prototype/all_Widgets/progressDialog.dart';
 import 'package:provider/provider.dart';
-import 'package:mowasla_prototype/Models/Bus.dart';
+import 'package:mowasla_prototype/Models/bus.dart';
 import 'navigation_drawer_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:mowasla_prototype/mainScreen.dart';
+import 'package:mowasla_prototype/main_screen.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 
 
@@ -150,10 +150,13 @@ class _HomerouteState extends State<Homeroute> with TickerProviderStateMixin {
             Navigator.push(context,
                     MaterialPageRoute(builder: (context) => chooseRoute()));
           // getBusPlaceDirection();
+
                     // setState(() {
                     //   s1.setindex = 1;
                     // });
                     // getPlaceDirection();
+
+          getPlaceDirection();
 
          },
         child:Text("رايح فين") ,)
@@ -223,6 +226,7 @@ class _HomerouteState extends State<Homeroute> with TickerProviderStateMixin {
           prefixIcon: Padding(
             padding: EdgeInsets.only(top: 0),
             child: Icon(Icons.search),
+            
           ),
           contentPadding: new EdgeInsets.symmetric(vertical: 5,horizontal: 5)
           ),textAlign: TextAlign.center,
@@ -304,10 +308,13 @@ class _HomerouteState extends State<Homeroute> with TickerProviderStateMixin {
     
 }
 Future<void> getPlaceDirection() async {
+  
     var initialPos =
         Provider.of<AppData>(context, listen: false).pickupLocation;
     var finalPos = Provider.of<AppData>(context, listen: false).dropOfAddress;
     // print(res);
+    // var pickUplatlng = LatLng(31.282688, 30.010827);
+    // var dropOffLatlng = LatLng(31.210247, 29.908724);
 
     var pickUplatlng = LatLng(initialPos!.latitude, initialPos.longitude);
     var dropOffLatlng = LatLng(finalPos!.latitude, finalPos.longitude);
@@ -387,14 +394,14 @@ Future<void> getPlaceDirection() async {
     Marker pickUpLocMarker = Marker(
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
       infoWindow:
-          InfoWindow(title: initialPos.placeName, snippet: "My Location"),
+          InfoWindow(title: initialPos!.placeName, snippet: "My Location"),
       position: pickUplatlng,
       markerId: MarkerId("pickUpId"),
     );
     Marker dropOffLocMarker = Marker(
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
       infoWindow:
-          InfoWindow(title: finalPos.placeName, snippet: "DroppOff Location"),
+          InfoWindow(title: finalPos!.placeName, snippet: "DroppOff Location"),
       position: dropOffLatlng,
       markerId: MarkerId("dropOffId"),
     );

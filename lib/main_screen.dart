@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_init_to_null
+
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
@@ -6,15 +8,15 @@ import 'package:flutter/services.dart';
 import 'package:mowasla_prototype/Assistants/assistantMethods.dart';
 import 'package:mowasla_prototype/Assistants/geoFireAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
-import 'package:mowasla_prototype/Models/Bus.dart';
-import 'package:mowasla_prototype/Models/busSearch.dart';
-import 'package:mowasla_prototype/Models/directDetails.dart';
+import 'package:mowasla_prototype/Models/bus.dart';
+import 'package:mowasla_prototype/Models/bus_search.dart';
+import 'package:mowasla_prototype/Models/direct_details.dart';
 import 'package:mowasla_prototype/Models/nearByAvailableDrivers.dart';
 import 'package:mowasla_prototype/StartupPage.dart';
 import 'package:mowasla_prototype/all_Widgets/Divider.dart';
 import 'package:mowasla_prototype/all_Widgets/progressDialog.dart';
-import 'package:mowasla_prototype/mainScreen.dart';
-import 'package:mowasla_prototype/SearchScreen/searchScreen.dart';
+import 'package:mowasla_prototype/main_screen.dart';
+import 'package:mowasla_prototype/SearchScreen/search_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
@@ -104,7 +106,8 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Main Screen"),
+        title: Image(image: AssetImage("assets/Images/mwasla_logo.png"),width: 100,),
+        backgroundColor: Colors.black,
       ),
       body: Stack(
         children: [
@@ -145,7 +148,7 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
                 curve: Curves.bounceIn,
                 duration: new Duration(microseconds: 160),
                 child: Container(
-                  height: searchContainerHeight,
+                  height: 300,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -163,13 +166,13 @@ class _mainScreenState extends State<mainScreen> with TickerProviderStateMixin {
                       SizedBox(
                         height: 6.0,
                       ),
+                      // Text(
+                      //   "Hi there,",
+                      //   style: TextStyle(fontSize: 10.0),
+                      // ),
                       Text(
-                        "Hi there,",
-                        style: TextStyle(fontSize: 10.0),
-                      ),
-                      Text(
-                        "Where to?,",
-                        style: TextStyle(fontSize: 15.0),
+                        "رايح فين ؟", 
+                        style: TextStyle(fontSize: 15.0,fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 20.0,

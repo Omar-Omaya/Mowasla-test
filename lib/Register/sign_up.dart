@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mowasla_prototype/New_Screen/homeScreen.dart';
-import 'package:mowasla_prototype/Register/signIn.dart';
+import 'package:mowasla_prototype/New_Screen/home_screen.dart';
+import 'package:mowasla_prototype/Register/sign_in.dart';
 import 'package:mowasla_prototype/main.dart';
-import 'package:mowasla_prototype/mainScreen.dart';
+import 'package:mowasla_prototype/main_screen.dart';
 import 'package:mowasla_prototype/New_Screen/bottomNav.dart';
 
 
@@ -31,14 +31,14 @@ class signUp extends StatelessWidget {
         child: Column(
         children: [
           SizedBox(height: 35.0,),
-          Image(
+          const Image(
             image: AssetImage("assets/Images/mwasla_logo.png") ,
             width: 390.0,
             height: 250.0,
             alignment: Alignment.center,
             ),
             SizedBox(height: 1.0,),
-            Text(
+            const Text(
               "Login as a Rider",
               textAlign: TextAlign.center,
             ),
@@ -46,7 +46,7 @@ class signUp extends StatelessWidget {
             TextFormField(
               controller: nameTextEditingController,
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Name",
                 isDense: true,
                 contentPadding: EdgeInsets.all(15),
@@ -58,7 +58,7 @@ class signUp extends StatelessWidget {
               TextFormField(
               controller: emailTextEditingController,
               keyboardType: TextInputType.name,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Email",
                 isDense: true,
                 contentPadding: EdgeInsets.all(15),
@@ -67,27 +67,25 @@ class signUp extends StatelessWidget {
                 )
               ),
             ),
-            SizedBox(height: 2.0,),
+            const SizedBox(height: 2.0,),
             TextFormField(
               controller: phoneTextEditingController,
               keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelText: "Phone",
-                isDense: true,
+              decoration: const InputDecoration(
+              labelText: "Phone",
+              isDense: true,
                 contentPadding: EdgeInsets.all(15),
                 labelStyle: TextStyle(color:
                 Colors.black
                 )                
               ),
-            ),SizedBox(height: 2.0,),
-            SizedBox(height: 1.0,),
-            SizedBox(height: 1.0,),
+            ),const SizedBox(height: 2.0,),
             TextFormField(
               controller: passwordTextEditingController,
               obscureText: true,
               obscuringCharacter: "*",
               keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Password",
                 isDense: true,
                 contentPadding: EdgeInsets.all(15),
@@ -102,7 +100,7 @@ class signUp extends StatelessWidget {
               textColor: Colors.white,
               child: Container(
                 height: 50.0,
-                child: Center(
+                child: const Center(
                   child: Text(
                     "Create Account"
                   ) 
@@ -142,7 +140,7 @@ class signUp extends StatelessWidget {
             {
               Navigator.pushNamedAndRemoveUntil(context, signIn.idScreen, (route) => false);
             },
-              child: Text(
+              child: const Text(
                 "Already have an Account? Login Here."
               )
               )

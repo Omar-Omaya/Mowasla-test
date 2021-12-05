@@ -3,7 +3,9 @@ import 'package:http/http.dart';
 import 'package:mowasla_prototype/Assistants/RequestAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
 import 'package:mowasla_prototype/Models/address.dart';
+// import 'package:mowasla_prototype/Models/bus.dart';
 import 'package:mowasla_prototype/Models/placePredictions.dart';
+import 'package:mowasla_prototype/New_Screen/bus_screen.dart';
 import 'package:mowasla_prototype/all_Widgets/Divider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +33,7 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           Container(
             height: 225.0,
-            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            decoration: const BoxDecoration(color: Colors.white, boxShadow: [
               BoxShadow(
                 color: Colors.black,
                 blurRadius: 6.0,
@@ -40,11 +42,11 @@ class _SearchScreenState extends State<SearchScreen> {
               )
             ]),
             child: Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                   left: 25.0, top: 20.0, right: 25.0, bottom: 20.0),
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 5.0,
                   ),
                   Stack(
@@ -55,7 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         },
                         child: Icon(Icons.arrow_back),
                       ),
-                      Center(
+                      const Center(
                         child: Text(
                           "Set Drop off",
                           style: TextStyle(fontSize: 18.0),
@@ -63,14 +65,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16.0,
                   ),
                   Row(
                     children: [
                       // Image.asset("images/pickIcon.png",height: 16.0,width: 16.0,),
-                      Icon(Icons.ac_unit),
-                      SizedBox(
+                      const Icon(Icons.ac_unit),
+                      const SizedBox(
                         width: 18.0,
                       ),
                       Expanded(
@@ -88,7 +90,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               filled: true,
                               border: InputBorder.none,
                               isDense: true,
-                              contentPadding: EdgeInsets.only(
+                              contentPadding: const EdgeInsets.only(
                                   left: 11.0, top: 8.0, bottom: 8.0),
                             ),
                           ),
@@ -96,14 +98,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       ))
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16.0,
                   ),
                   Row(
                     children: [
                       // Image.asset("images/pickIcon.png",height: 16.0,width: 16.0,),
                       Icon(Icons.ac_unit),
-                      SizedBox(
+                      const SizedBox(
                         width: 18.0,
                       ),
                       Expanded(
@@ -124,7 +126,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 filled: true,
                                 border: InputBorder.none,
                                 isDense: true,
-                                contentPadding: EdgeInsets.only(
+                                contentPadding: const EdgeInsets.only(
                                     left: 11.0, top: 8.0, bottom: 8.0),
                               ),
                             ),
@@ -196,9 +198,9 @@ class PredictionTile extends StatelessWidget {
     return FlatButton(
       padding: EdgeInsets.all(0.0),
       onPressed: () {
-        // Navigator.of(context)
-        //     .push(MaterialPageRoute(builder: (context) => SuggestionsScreen(place_id: placePredictions.place_id,)));
-        getPlaceAddressDetails(placePredictions.place_id, context);
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Bus()));
+        // getPlaceAddressDetails(placePredictions.place_id, context);
       },
       child: Container(
         child: Column(

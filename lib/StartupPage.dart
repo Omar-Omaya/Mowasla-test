@@ -15,12 +15,12 @@
 // class _StartupPageState extends State<StartupPage> {
 //   @override
 //   Widget build(BuildContext context) {
-//         Timer(
-//             Duration(seconds: 3),
-//                 () =>
-//             Navigator.of(context).pushReplacement(MaterialPageRoute(
-//                 // builder: (BuildContext context) => SignIn()))
-//                 );
+//         // Timer(
+//         //     Duration(seconds: 3),
+//         //         () =>
+//         //     Navigator.of(context).pushReplacement(MaterialPageRoute(
+//         //         // builder: (BuildContext context) => SignIn()))
+//         //         );
 //     return Container(
       
 //       padding: EdgeInsets.symmetric(horizontal: 40.0),

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mowasla_prototype/DataHandler/appData.dart';
 import 'package:mowasla_prototype/Models/address.dart';
-import 'package:mowasla_prototype/New_Screen/bus.dart';
+import 'package:mowasla_prototype/Models/bus_search.dart';
+import 'package:mowasla_prototype/New_Screen/bus_screen.dart';
 import 'package:mowasla_prototype/Assistants/Singleton.dart';
 import 'package:mowasla_prototype/New_Screen/bottomNav.dart';
-import 'package:mowasla_prototype/New_Screen/homeScreen.dart';
+import 'package:mowasla_prototype/New_Screen/home_screen.dart';
 import 'package:mowasla_prototype/New_Screen/rail_train.dart';
 import 'package:mowasla_prototype/New_Screen/taxi.dart';
+// import 'package:mowasla_prototype/SearchScreen/search_screen.dart';
+import 'search_trips.dart';
+import 'package:provider/provider.dart';
 
 class chooseRoute extends StatefulWidget {
   const chooseRoute({ Key? key }) : super(key: key);
@@ -57,14 +62,12 @@ class _chooseRouteState extends State<chooseRoute> {
               Navigator.pushNamedAndRemoveUntil(context, Homeroute.idScreen, (route) => false);
             }
           ),
-            IconButton(icon: const Icon(Icons.local_taxi),
+            IconButton(icon: const Icon(Icons.location_disabled),
             onPressed: ()
             {
-              s1.setindex=1;
-              s1.getindex;
-              print(s1.getindex);
               Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Bus()));
+                    MaterialPageRoute(builder: (context) => SearchScreen()));
+              // getBusPlaceAddressDetails();
             }
           ),
 
@@ -81,13 +84,22 @@ class _chooseRouteState extends State<chooseRoute> {
   );
   }
 
-  void getBusPlaceAddressDetails()
-  {
-    Address address = Address();
-    address.placeName = "Montaza";
-    address.placeId = "NULL";
-    address.latitude = 31.282013;
-    // address.longitude=
+//   void getBusPlaceAddressDetails()
+//   {
+//     Address address = Address();
+//     address.placeName = "Montaza";
+//     address.placeId = "NULL";
+//     address.latitude = 31.281936;
+//     address.longitude=30.010829;
 
-  }
+//     Provider.of<AppData>(context,listen: false).updateDropOffocationAddress(address);
+
+//     // Navigator.pop(context);
+//     int count = 0;
+//     Navigator.popUntil(context, (route) {
+//     return count++ == 2;
+// });
+
+
+//   }
 }

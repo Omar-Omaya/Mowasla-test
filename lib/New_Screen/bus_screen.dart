@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mowasla_prototype/Assistants/Singleton.dart';
-import 'package:mowasla_prototype/New_Screen/homeScreen.dart';
+import 'package:mowasla_prototype/DataHandler/appData.dart';
+import 'package:mowasla_prototype/Models/address.dart';
+import 'package:mowasla_prototype/New_Screen/home_screen.dart';
+import 'package:provider/provider.dart';
 import 'navigation_drawer_widget.dart';
 
 class Bus extends StatefulWidget {
@@ -42,7 +45,8 @@ class _BusState extends State<Bus> {
                 Image.asset("assets/Images/tripCard5.png"),
                 IconButton(onPressed: ()
                 {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> Homeroute()));
+                  // Navigator.push(context, MaterialPageRoute(builder: (context)=> Homeroute()));
+                  getBusPlaceAddressDetails();
                   s1.setindex=2;
                   
 
@@ -85,5 +89,23 @@ class _BusState extends State<Bus> {
     
       
     );
+  }
+  void getBusPlaceAddressDetails()
+  {
+    Address address = Address();
+    address.placeName = "Montaza";
+    address.placeId = "NULL";
+    address.latitude = 31.281936;
+    address.longitude=30.010829;
+
+    Provider.of<AppData>(context,listen: false).updateDropOffocationAddress(address);
+
+    // Navigator.pop(context);
+    int count = 0;
+    Navigator.popUntil(context, (route) {
+    return count++ == 3;
+});
+
+
   }
 }
