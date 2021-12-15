@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mowasla_prototype/DataHandler/appData.dart';
+import 'package:mowasla_prototype/Models/address.dart';
+import 'package:provider/provider.dart';
 import 'navigation_drawer_widget.dart';
 
 
@@ -35,7 +38,20 @@ appBar: AppBar(
                 Image.asset("assets/Images/FastB1.png"),
                 
                 //Image.asset("assets/Images/tripCar6.png"),
-                Image.asset("assets/Images/tripCard7.png"),
+
+                InkWell(child:
+                  Image.asset("assets/Images/tripCard7.png"),
+                  onTap: (){
+                    int count = 0;
+                    Navigator.popUntil(context, (route) {
+                    return count++ == 2;
+                    });
+                    // getTrainPlaceAddressDetails(addressNamedDropoff, addressLatDropoff, addressLonDropOff, addressNamedPickUp, addressLatPickup, addressLonPickup)
+
+                    },
+
+                ),
+                
                 Image.asset("assets/Images/tripCard8.png"),
 
 
@@ -72,5 +88,38 @@ appBar: AppBar(
 
     
     );   
+  }
+  getTrainPlaceAddressDetails(addressNamedDropoff, addressLatDropoff, addressLonDropOff,addressNamedPickUp,addressLatPickup,addressLonPickup )
+  {
+
+    // PickUpAddress pickUpAddress = PickUpAddress();
+    Address pickUpAddress = Address();
+
+    pickUpAddress.placeName = addressNamedPickUp;
+    pickUpAddress.placeId = "null";
+    pickUpAddress.latitude= addressLatPickup;
+    pickUpAddress.longitude = addressLonPickup;
+
+    Provider.of<AppData>(context,listen: false).updatePickUpLocationAddress(pickUpAddress);
+
+
+    Address address = Address();
+    address.placeName = addressNamedDropoff;
+    address.placeId = "null";
+    address.latitude = addressLatDropoff;
+    address.longitude=addressLonDropOff;
+
+    Provider.of<AppData>(context,listen: false).updateDropOffocationAddress(address);
+
+    
+
+    // Navigator.pop(context);
+    int count = 0;
+    Navigator.popUntil(context, (route) {
+    return count++ == 2;
+    });
+    
+
+
   }
 }

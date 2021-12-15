@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mowasla_prototype/Models/address.dart';
+import 'package:mowasla_prototype/Models/address_pickup.dart';
 
 class AppData extends ChangeNotifier
 {
@@ -17,5 +18,8 @@ class AppData extends ChangeNotifier
     this.dropOfAddress = dropOfAddress;
     notifyListeners();
   }
+
+
+
 
 }

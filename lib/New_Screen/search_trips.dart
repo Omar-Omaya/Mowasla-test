@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:mowasla_prototype/Assistants/RequestAssistant.dart';
+import 'package:mowasla_prototype/Assistants/singleton_handler.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
 import 'package:mowasla_prototype/Models/address.dart';
 // import 'package:mowasla_prototype/Models/bus.dart';
 import 'package:mowasla_prototype/Models/placePredictions.dart';
 import 'package:mowasla_prototype/New_Screen/bus_screen.dart';
+import 'package:mowasla_prototype/New_Screen/rail_train.dart';
+import 'package:mowasla_prototype/New_Screen/train.dart';
 import 'package:mowasla_prototype/all_Widgets/Divider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -28,100 +30,66 @@ class _SearchScreenState extends State<SearchScreen> {
         Provider.of<AppData>(context).pickupLocation!.placeName ?? "";
     pickUpTextEdtingController.text = placeAddress;
 
+
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            height: 225.0,
-            decoration: const BoxDecoration(color: Colors.white, boxShadow: [
-              BoxShadow(
-                color: Colors.black,
-                blurRadius: 6.0,
-                spreadRadius: 0.5,
-                offset: Offset(0.7, 0.7),
-              )
-            ]),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 25.0, top: 20.0, right: 25.0, bottom: 20.0),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 5.0,
-                  ),
-                  Stack(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(Icons.arrow_back),
-                      ),
-                      const Center(
-                        child: Text(
-                          "Set Drop off",
-                          style: TextStyle(fontSize: 18.0),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 225.0,
+              decoration: const BoxDecoration(color: Colors.white, boxShadow: [
+                BoxShadow(
+                  color: Colors.black,
+                  blurRadius: 6.0,
+                  spreadRadius: 0.5,
+                  offset: Offset(0.7, 0.7),
+                )
+              ]),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 25.0, top: 20.0, right: 25.0, bottom: 20.0),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 5.0,
+                    ),
+                    Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_back),
                         ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  Row(
-                    children: [
-                      // Image.asset("images/pickIcon.png",height: 16.0,width: 16.0,),
-                      const Icon(Icons.ac_unit),
-                      const SizedBox(
-                        width: 18.0,
-                      ),
-                      Expanded(
-                          child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey[400],
-                            borderRadius: BorderRadius.circular(5.0)),
-                        child: Padding(
-                          padding: EdgeInsets.all(3.0),
-                          child: TextField(
-                            controller: pickUpTextEdtingController,
-                            decoration: InputDecoration(
-                              hintText: "Pickup Location",
-                              fillColor: Colors.grey[400],
-                              filled: true,
-                              border: InputBorder.none,
-                              isDense: true,
-                              contentPadding: const EdgeInsets.only(
-                                  left: 11.0, top: 8.0, bottom: 8.0),
-                            ),
+                        const Center(
+                          child: Text(
+                            "Set Drop off",
+                            style: TextStyle(fontSize: 18.0),
                           ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    Row(
+                      children: [
+                        // Image.asset("images/pickIcon.png",height: 16.0,width: 16.0,),
+                        const Icon(Icons.ac_unit),
+                        const SizedBox(
+                          width: 18.0,
                         ),
-                      ))
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  Row(
-                    children: [
-                      // Image.asset("images/pickIcon.png",height: 16.0,width: 16.0,),
-                      Icon(Icons.ac_unit),
-                      const SizedBox(
-                        width: 18.0,
-                      ),
-                      Expanded(
-                        child: Container(
+                        Expanded(
+                            child: Container(
                           decoration: BoxDecoration(
                               color: Colors.grey[400],
                               borderRadius: BorderRadius.circular(5.0)),
                           child: Padding(
                             padding: EdgeInsets.all(3.0),
                             child: TextField(
-                              onChanged: (val) {
-                                findPlace(val);
-                              },
-                              controller: dropOffTextEditingController,
+                              controller: pickUpTextEdtingController,
                               decoration: InputDecoration(
-                                hintText: "Where to ?",
+                                hintText: "Pickup Location",
                                 fillColor: Colors.grey[400],
                                 filled: true,
                                 border: InputBorder.none,
@@ -131,33 +99,70 @@ class _SearchScreenState extends State<SearchScreen> {
                               ),
                             ),
                           ),
+                        ))
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    Row(
+                      children: [
+                        // Image.asset("images/pickIcon.png",height: 16.0,width: 16.0,),
+                        Icon(Icons.ac_unit),
+                        const SizedBox(
+                          width: 18.0,
                         ),
-                      )
-                    ],
-                  )
-                ],
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.grey[400],
+                                borderRadius: BorderRadius.circular(5.0)),
+                            child: Padding(
+                              padding: EdgeInsets.all(3.0),
+                              child: TextField(
+                                onChanged: (val) {
+                                  findPlace(val);
+                                },
+                                controller: dropOffTextEditingController,
+                                decoration: InputDecoration(
+                                  hintText: "Where to ?",
+                                  fillColor: Colors.grey[400],
+                                  
+                                  border: InputBorder.none,
+                                  
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 11.0, top: 8.0, bottom: 8.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          (placePredictionList.length > 0)
-              ? Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                  child: ListView.separated(
-                    padding: EdgeInsets.all(0.0),
-                    itemBuilder: (context, index) {
-                      return PredictionTile(
-                          placePredictions: placePredictionList[index]);
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        DividerWidget(),
-                    itemCount: placePredictionList.length,
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                  ),
-                )
-              : Container()
-        ],
+            (placePredictionList.length > 0)
+                ? Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    child: ListView.separated(
+                      padding: EdgeInsets.all(0.0),
+                      itemBuilder: (context, index) {
+                        return PredictionTile(
+                            placePredictions: placePredictionList[index]);
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          DividerWidget(),
+                      itemCount: placePredictionList.length,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                    ),
+                  )
+                : Container()
+          ],
+        ),
       ),
     );
   }
@@ -189,17 +194,31 @@ class _SearchScreenState extends State<SearchScreen> {
 }
 
 class PredictionTile extends StatelessWidget {
-  PredictionTile({required this.placePredictions});
+  PredictionTile({required this.placePredictions,});
 
   late final PlacePredictions placePredictions;
-
+    Singleton indexs = Singleton();
   @override
   Widget build(BuildContext context) {
     return FlatButton(
       padding: EdgeInsets.all(0.0),
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Bus()));
+        if(indexs.getindex==0){
+          Navigator.pushNamed(context, Bus.idScreen);
+        }
+        else if(indexs.getindex==1){
+          getPlaceAddressDetails(placePredictions.place_id, context);
+        }
+        else if(indexs.getindex==2){
+          Navigator.pushNamed(context, Train.idScreen);
+        }
+        else{
+          Navigator.pushNamed(context, rail_train.idScreen);
+        }
+
+        
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => Bus()));
         // getPlaceAddressDetails(placePredictions.place_id, context);
       },
       child: Container(

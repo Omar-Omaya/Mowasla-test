@@ -8,18 +8,16 @@ import 'package:location/location.dart';
 import 'package:mowasla_prototype/Assistants/assistantMethods.dart';
 import 'package:mowasla_prototype/Assistants/geoFireAssistant.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
-import 'package:mowasla_prototype/Assistants/Singleton.dart';
+import 'package:mowasla_prototype/Assistants/singleton_handler.dart';
 import 'package:mowasla_prototype/Models/direct_details.dart';
 import 'package:mowasla_prototype/Models/nearByAvailableDrivers.dart';
-import 'package:mowasla_prototype/New_Screen/transportationDesicion.dart';
-import 'package:mowasla_prototype/SearchScreen/search_screen.dart';
+import 'package:mowasla_prototype/New_Screen/transportation_desicion.dart';
 import 'package:mowasla_prototype/all_Widgets/progressDialog.dart';
 import 'package:provider/provider.dart';
 import 'package:mowasla_prototype/Models/bus.dart';
 import 'navigation_drawer_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:mowasla_prototype/main_screen.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 
 

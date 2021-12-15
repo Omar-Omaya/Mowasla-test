@@ -3,7 +3,7 @@ import 'package:mowasla_prototype/DataHandler/appData.dart';
 import 'package:mowasla_prototype/Models/address.dart';
 import 'package:mowasla_prototype/Models/bus_search.dart';
 import 'package:mowasla_prototype/New_Screen/bus_screen.dart';
-import 'package:mowasla_prototype/Assistants/Singleton.dart';
+import 'package:mowasla_prototype/Assistants/singleton_handler.dart';
 import 'package:mowasla_prototype/New_Screen/bottomNav.dart';
 import 'package:mowasla_prototype/New_Screen/home_screen.dart';
 import 'package:mowasla_prototype/New_Screen/rail_train.dart';
@@ -29,7 +29,7 @@ class _chooseRouteState extends State<chooseRoute> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
 
-          IconButton(icon: const Icon(Icons.bus_alert),
+          IconButton(icon: Image.asset("assets/Images/tram.jpg"),
             onPressed: ()
             {
               s1.setindex=1;
@@ -41,7 +41,7 @@ class _chooseRouteState extends State<chooseRoute> {
               
             }
           ),
-            IconButton(icon: const Icon(Icons.bus_alert),
+            IconButton(icon: Image.asset("assets/Images/train.jpg"),
             onPressed: ()
             {
               s1.setindex=1;
@@ -53,7 +53,7 @@ class _chooseRouteState extends State<chooseRoute> {
               Navigator.pushNamedAndRemoveUntil(context, Bus.idScreen, (route) => true);
             }
           ),
-            IconButton(icon: const Icon(Icons.local_taxi),
+            IconButton(icon: Image.asset("assets/Images/taxi.jpg"),
             onPressed: ()
             {
               s1.setindex=1;
@@ -62,7 +62,7 @@ class _chooseRouteState extends State<chooseRoute> {
               Navigator.pushNamedAndRemoveUntil(context, Homeroute.idScreen, (route) => false);
             }
           ),
-            IconButton(icon: const Icon(Icons.location_disabled),
+            IconButton(icon: Image.asset("assets/Images/bus.jpg", width: 200,height: 200,),
             onPressed: ()
             {
               Navigator.push(context,

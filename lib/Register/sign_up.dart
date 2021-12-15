@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mowasla_prototype/New_Screen/home_screen.dart';
+import 'package:mowasla_prototype/main_final.dart';
 import 'package:mowasla_prototype/Register/sign_in.dart';
 import 'package:mowasla_prototype/main.dart';
-import 'package:mowasla_prototype/main_screen.dart';
+import 'package:mowasla_prototype/main_final.dart';
 import 'package:mowasla_prototype/New_Screen/bottomNav.dart';
 
 
@@ -70,7 +70,7 @@ class signUp extends StatelessWidget {
             const SizedBox(height: 2.0,),
             TextFormField(
               controller: phoneTextEditingController,
-              keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.text,
               decoration: const InputDecoration(
               labelText: "Phone",
               isDense: true,
@@ -84,7 +84,7 @@ class signUp extends StatelessWidget {
               controller: passwordTextEditingController,
               obscureText: true,
               obscuringCharacter: "*",
-              keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.visiblePassword,
               decoration: const InputDecoration(
                 labelText: "Password",
                 isDense: true,
@@ -177,7 +177,7 @@ void registerNewUser(BuildContext context) async
     usersRef.child(firebaseUser.uid).set(userDataMap);
     displayToastMessage("Congrats, your account has been created.", context);
 
-    Navigator.pushNamedAndRemoveUntil(context, Homeroute.idScreen, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(context, mainScreen.idScreen, (route) => false);
 
 
   }

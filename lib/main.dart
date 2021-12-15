@@ -2,16 +2,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mowasla_prototype/DataHandler/appData.dart';
-import 'package:mowasla_prototype/SearchScreen/search_screen.dart';
+// import 'package:mowasla_prototype/SearchScreen/search_screen.dart';
 import 'New_Screen/bus_screen.dart';
 import 'package:mowasla_prototype/New_Screen/home_screen.dart';
-import 'package:mowasla_prototype/New_Screen/bottomNav.dart';
 import 'package:mowasla_prototype/New_Screen/rail_train.dart';
 import 'package:mowasla_prototype/New_Screen/taxi.dart';
 import 'package:mowasla_prototype/New_Screen/train.dart';
 import 'package:mowasla_prototype/Register/sign_in.dart';
 import 'package:mowasla_prototype/Register/sign_up.dart';
-import 'package:mowasla_prototype/main_screen.dart';
+import 'New_Screen/search_trips.dart';
+// import 'package:mowasla_prototype/main_screen.dart';
+import 'main_final.dart';
 import 'package:provider/provider.dart';
 // void main() async
 // {
@@ -64,7 +65,7 @@ class MyApps extends StatelessWidget {
       create: (context) => AppData(),
       child: MaterialApp(
     
-        initialRoute: Homeroute.idScreen,
+        initialRoute: mainScreen.idScreen,
         routes: 
         {
           signUp.idScreen : (context) => signUp(),

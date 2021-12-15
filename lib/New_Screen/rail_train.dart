@@ -26,15 +26,28 @@ appBar: AppBar(
       children: [
 
                 Image.asset("assets/Images/FastB1.png"),
-                
+                InkWell(child:
+                  Image.asset("assets/Images/tripCard7.png"),
+                  onTap: (){
+                    int count = 0;
+                    Navigator.popUntil(context, (route) {
+                    return count++ == 2;
+                    });
+                    // getTrainPlaceAddressDetails(addressNamedDropoff, addressLatDropoff, addressLonDropOff, addressNamedPickUp, addressLatPickup, addressLonPickup)
+
+                    },
+
+                ),
+
+
                // Image.asset("assets/Images/tripCar9.png"),
-                Image.asset("assets/Images/tripCard10.png"),
-                Image.asset("assets/Images/tripCard11.png"),
-                Image.asset("assets/Images/tripCard11.png"),
-                Image.asset("assets/Images/tripCard11.png"),
-                Image.asset("assets/Images/tripCard11.png"),
-                Image.asset("assets/Images/tripCard11.png"),
-                Image.asset("assets/Images/tripCard11.png"),
+                // Image.asset("assets/Images/tripCard10.png"),
+                // Image.asset("assets/Images/tripCard11.png"),
+                // Image.asset("assets/Images/tripCard11.png"),
+                // Image.asset("assets/Images/tripCard11.png"),
+                // Image.asset("assets/Images/tripCard11.png"),
+                // Image.asset("assets/Images/tripCard11.png"),
+                // Image.asset("assets/Images/tripCard11.png"),
 
 
             // ClipRRect(
