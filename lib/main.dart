@@ -14,6 +14,7 @@ import 'New_Screen/search_trips.dart';
 // import 'package:mowasla_prototype/main_screen.dart';
 import 'main_final.dart';
 import 'package:provider/provider.dart';
+
 // void main() async
 // {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -22,20 +23,13 @@ import 'package:provider/provider.dart';
 // }
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
-  runApp(
-    MaterialApp(
-      home: MyApps(),
-      
-    )
-  );
 
-
+  runApp(MaterialApp(
+    home: MyApps(),
+  ));
 }
-
 
 // class MyApp extends StatelessWidget {
 //   const MyApp({Key? key}) : super(key: key);
@@ -53,11 +47,11 @@ void main() async {
 //   }
 // }
 
-
-DatabaseReference usersRef = FirebaseDatabase.instance.reference().child("users");
+DatabaseReference usersRef =
+    FirebaseDatabase.instance.reference().child("users");
 
 class MyApps extends StatelessWidget {
-  const MyApps({ Key? key }) : super(key: key);
+  const MyApps({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +75,7 @@ class MyApps extends StatelessWidget {
           
         },
         debugShowCheckedModeBanner: false,
-        
       ),
     );
   }
 }
-
